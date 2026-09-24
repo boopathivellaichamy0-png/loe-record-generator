@@ -6,11 +6,11 @@ import PdfDocument from './components/PdfDocument';
 import { exportToPdf } from './utils/pdfExporter';
 
 // Factory for creating a brand new experiment
-export const createNewExperiment = (expNumber = 6) => ({
+export const createNewExperiment = (expNumber = 1) => ({
   id: `exp_${Date.now()}_${expNumber}`,
   expNo: String(expNumber),
-  date: '',
-  title: `BASH SCRIPT ${expNumber}`,
+  date: '07.07.2026',
+  title: `EXPERIMENT TITLE ${expNumber}`,
   aim: '',
   algorithm: '',
   code: '',
@@ -27,14 +27,14 @@ export const createNewExperiment = (expNumber = 6) => ({
   result: ''
 });
 
-// Initial Data Matching Uploaded Target College Laboratory Record (Exp 6, 7, 8)
+// Initial Data Matching Uploaded Target College Laboratory Record (Exp 1 & Exp 2)
 export const INITIAL_MULTI_EXPERIMENT_DATA = {
-  studentName: 'ASHWANT S',
-  registerNo: '714025247009',
+  studentName: 'DEEPAK A',
+  registerNo: '714025247021',
   fontFamily: 'Times New Roman',
-  bodyFontSize: 12,
-  codeFontSize: 11,
-  titleFontSize: 13,
+  bodyFontSize: 13,
+  codeFontSize: 12.5,
+  titleFontSize: 14.5,
   imageMaxHeight: 180,
   imageMaxWidth: 95,
   imageAlignment: 'center',
@@ -45,40 +45,48 @@ export const INITIAL_MULTI_EXPERIMENT_DATA = {
   activeExpIndex: 0,
   experiments: [
     {
-      id: 'exp_6',
-      expNo: '6',
-      date: '',
-      title: 'BASH SCRIPT USING BASH VARIABLE',
-      aim: 'To write a Bash shell script to calculate an employee\'s basic salary details and arithmetic equation',
-      algorithm: `1. Start the program.
-2. Read the employee name.
-3. Read the basic salary.
-4. Calculate HRA as 20% of the basic salary.
-5. Calculate DA as 10% of the basic salary.
-6. Calculate gross salary = Basic salary + HRA + DA.
-7. Display the employee details and salary.`,
+      id: 'exp_1',
+      expNo: '1',
+      date: '07.07.2026',
+      title: 'INSTALLATION OF KALI LINUX USING ORACLE VM VIRTUALBOX',
+      aim: 'To install and configure Kali Linux on Oracle VirtualBox by creating a virtual machine, installing the Kali Linux operating system, and verifying its successful setup for cybersecurity and networking experiments.',
+      algorithm: `OPERATING SYSTEM :
+Definition: An Operating System is system software that manages the computer's hardware and software resources and allows users to interact with the computer.
+
+KALI LINUX:
+Definition: Kali Linux is a Debian-based Linux distribution developed for offensive security. It is specially designed for cybersecurity professionals, ethical hackers, penetration testers, and digital forensic analysts.
+
+Advantages of kali linux:
+• Free and open source
+• Pre-installed security tools
+• Regular updates
+• Highly customizable
+• Strong community support
+
+Disadvantages of Kali Linux:
+• Difficult for beginners
+• Not suitable for daily use
+• Can be misused if used illegally
+• Requires Linux knowledge
+• Some hardware compatibility issues`,
       codeLabel: 'COMMANDS:',
-      code: `1. To create shell file:
-   $ nano emp.sh
-2. #Scripting
-   echo "Enter employee name:"
-   read name
-   echo "Employee Basic Salary:"
-   read salary
-   da=$((salary * 10 / 100))
-   hra=$((salary * 20 / 100))
-   gross=$((salary + da + hra))
-   echo "Employee name : $name"
-   echo "Employee basic salary : $salary"
-   echo "DA : $da"
-   echo "HRA : $hra"
-   echo "Gross salary : $gross"
+      code: `Procedure / Configuration of Kali Linux in VirtualBox:
 
-3. To give permission to execute:
-   $ chmod +x emp.sh
-
-4. To run the shell:
-   $ ./emp.sh`,
+Step 1: Open Oracle VirtualBox.
+Step 2: Select the New option to create a new virtual machine.
+Step 3: Enter the VM name as Kali Linux and select Linux -> Debian (64-bit).
+Step 4: Allocate 4096 MB RAM and 2 processor cores.
+Step 5: Create a 35 GB dynamically allocated VDI virtual hard disk.
+Step 6: Open Settings -> Storage and attach the downloaded Kali Linux ISO file.
+Step 7: Configure Display by setting 128 MB Video Memory and selecting VMSVGA as graphics controller.
+Step 8: Start the virtual machine and select Graphical Install.
+Step 9: Choose the language, location, and keyboard layout.
+Step 10: Enter the hostname, leave domain blank, and create username and password.
+Step 11: Select Guided - Use Entire Disk, choose the virtual hard disk, confirm partition settings.
+Step 12: Select the Xfce Desktop Environment and default tool selection for software installation.
+Step 13: Install the GRUB Boot Loader on /dev/sda and complete the installation.
+Step 14: Restart the virtual machine and log in using the created username and password.
+Step 15: Now the setup is complete, and Kali Linux is configured in Oracle VirtualBox.`,
       outputText: ``,
       outputImages: [],
       showEvalTable: true,
@@ -88,82 +96,57 @@ export const INITIAL_MULTI_EXPERIMENT_DATA = {
         viva: '',
         total: ''
       },
-      result: 'Thus, using Linux commands, employee gross salary has been found successfully.'
+      result: 'Thus, the installation of Oracle VirtualBox and Kali Linux, and the configuration of Kali Linux in Oracle VirtualBox, has been completed successfully.'
     },
     {
-      id: 'exp_7',
-      expNo: '7',
-      date: '',
-      title: 'BASH SCRIPT USING CONDITIONAL STATEMENT',
-      aim: 'To write a Bash shell script to validate the therapy session details such as Patient ID, Patient Name, Age, Gender, Therapist Name, Session Date, Session Time, Username and Password, and check whether valid.',
-      algorithm: `1. Read Patient ID, Patient Name, Age, Gender, Therapist Name, Session Time, Date, Username & Password.
-2. Check whether each required field is empty.
-3. Check whether Age is a number between 1 to 120.
-4. If any field is invalid, display the corresponding error message.`,
+      id: 'exp_2',
+      expNo: '2',
+      date: '07.07.2026',
+      title: 'EXECUTION OF BASIC LINUX COMMANDS',
+      aim: 'To learn and execute for user information directory management, directory navigation and file management.',
+      algorithm: `1. Open the Linux terminal.
+2. Display the current user information.
+3. Display the current working directory.
+4. List files and directories using different ls options.
+5. Navigate between directories using the cd command.
+6. Create new files using the touch command.
+7. Display the contents of the files using suitable commands.
+8. Copy and rename files and directories.
+9. Delete files and directories using suitable commands.
+10. Verify the files and directories after performing the operations.`,
       codeLabel: 'COMMANDS:',
-      code: `1.To create script:
-   $nano emp7.sh
-   #!/bin/bash
-   echo "Basic Therapy Session Login Validation"
-   read -p "Enter Patient ID: " patient_id
-   read -p "Enter Patient Name: " patient_name
-   read -p "Enter Age: " age
-   read -p "Enter Gender (Male/Female/Other): " gender
-   read -p "Enter Therapist Name: " therapist
-   read -p "Enter Session Date: " session_date
-   read -p "Enter Session Time: " session_time
-   read -p "Enter Username: " username
-   read -sp "Enter Password: " password
-   echo
-   valid=1
-   if [ -z "$patient_id" ]; then
-   echo "Error: Patient ID cannot be empty"
-   valid=0
-   fi
-   if [ -z "$patient_name" ]; then
-   echo "Error: Patient name cannot be empty"
-   valid=0
-   fi
-   if ! [[ "$age" =~ ^[0-9]+$ ]] || [ "$age" -lt 1 ] || [ "$age" -gt 120 ]; then
-   echo "Error: Age must be between 1 and 120"
-   valid=0
-   fi
-   if [ -z "$gender" ]; then
-   echo "Error: Gender cannot be empty"
-   valid=0
-   fi
-   if [ -z "$therapist" ]; then
-   echo "Error: Therapist Name cannot be empty"
-   valid=0
-   fi
-   if [ -z "$session_time" ]; then
-   echo "Error: Session Time cannot be empty"
-   valid=0
-   fi
-   if [ -z "$session_date" ]; then
-   echo "Error: Session Date cannot be empty"
-   valid=0
-   fi
-   if [ -z "$username" ]; then
-   echo "Error: Username cannot be empty"
-   valid=0
-   fi
-   if [ -z "$password" ]; then
-   echo "Error: Password cannot be empty"
-   valid=0
-   fi
-   if [ "$valid" -eq 1 ]; then
-   echo "All details are valid"
-   echo "Basic Therapy Session Login Successful!"
-   else
-   echo "Please enter valid details."
-   fi
-
-2.To give execute permission:
-  $ chmod +x emp7.sh
-
-3.To run the script:
-  $ ./emp7.sh`,
+      code: `1. Display the current username.
+   whoami
+2. Switch to root user
+   sudo -i
+3. Return to normal user
+   exit
+4. Displays the full path of working directory.
+   pwd
+5. List files and directories.
+   ls
+6. List files and Directories in long formats.
+   ls-l
+7. Lists all files and directories, including hidden files.
+   ls -a
+8. Change the Directory.
+   cd directory_name
+9. Move to parent directory.
+   cd ..
+10. Move to home directory.
+   cd~
+11. Create new directory.
+   mkdir directory_name
+12. To create a file.
+   touch file_name
+13. To work in that file.
+   echo "text"> file_name
+14. Display contents of the file.
+   cat file_name
+15. Remove specified file.
+   rm file_name
+16. Remove specified directory.
+   rmdir directory_name`,
       outputText: ``,
       outputImages: [],
       showEvalTable: true,
@@ -173,7 +156,7 @@ export const INITIAL_MULTI_EXPERIMENT_DATA = {
         viva: '',
         total: ''
       },
-      result: 'Thus, the login validation script was executed successfully and the therapy session details were validated.'
+      result: 'Thus, the basic Linux commands were executed successfully and the outputs were displayed successfully.'
     }
   ]
 };
@@ -221,7 +204,7 @@ export default function App() {
   // ADD NEW EXPERIMENT FEATURE
   const handleAddExperiment = () => {
     setFormData((prev) => {
-      const nextExpNum = (prev.experiments || []).length + 6;
+      const nextExpNum = (prev.experiments || []).length + 1;
       const newExp = createNewExperiment(nextExpNum);
       const updatedExps = [...(prev.experiments || []), newExp];
       return {
@@ -319,7 +302,7 @@ export default function App() {
       registerNo: '',
       watermarkText: '',
       activeExpIndex: 0,
-      experiments: [createNewExperiment(6)]
+      experiments: [createNewExperiment(1)]
     }));
   };
 

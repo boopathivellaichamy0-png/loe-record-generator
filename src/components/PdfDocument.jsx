@@ -5,10 +5,10 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
     studentName = '',
     registerNo = '',
     fontFamily = 'Times New Roman',
-    bodyFontSize = 12,
-    codeFontSize = 11,
-    titleFontSize = 13,
-    imageMaxHeight = 95,
+    bodyFontSize = 13,
+    codeFontSize = 12.5,
+    titleFontSize = 14.5,
+    imageMaxHeight = 180,
     imageMaxWidth = 95,
     imageAlignment = 'center',
     imageMarginTop = 4,
@@ -32,9 +32,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
   const experimentList = (experiments && experiments.length > 0)
     ? experiments
     : [{
-        expNo: data?.expNo || '01',
-        date: data?.date || '',
-        title: data?.title || 'Develop a Program',
+        expNo: data?.expNo || '1',
+        date: data?.date || '07.07.2026',
+        title: data?.title || 'INSTALLATION OF KALI LINUX USING ORACLE VM VIRTUALBOX',
         aim: data?.aim || '',
         algorithm: data?.algorithm || '',
         code: data?.code || '',
@@ -55,11 +55,11 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
   const activeOffsetY = imageOffsetY !== undefined ? imageOffsetY : (imageMarginTop || 4);
   const activeOffsetX = imageOffsetX || 0;
 
-  // EXACT CODE SPACE LINE CAPACITY RULES MATCHING TARGET PDF:
-  // Page 1 Code Capacity: 28 lines
-  // Continued Page Code Capacity: 35 lines
-  const page1MaxCodeCapacity = 28;
-  const continuationMaxCodeLines = 35;
+  // EXACT CODE SPACE LINE CAPACITY RULES MATCHING TARGET SAMPLE PDF:
+  // Page 1 Code Capacity: 24 lines (with 1.55 line-height)
+  // Continued Page Code Capacity: 30 lines
+  const page1MaxCodeCapacity = 24;
+  const continuationMaxCodeLines = 30;
 
   return (
     <div className="relative w-full flex justify-center">
@@ -198,7 +198,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
               onClick={() => {
                 handleFieldChange('imageOffsetX', 0);
                 handleFieldChange('imageOffsetY', 4);
-                handleFieldChange('imageMaxHeight', 95);
+                handleFieldChange('imageMaxHeight', 180);
                 handleFieldChange('imageMaxWidth', 95);
               }}
               className="flex-1 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors"
@@ -223,8 +223,8 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
       >
         {experimentList.map((expItem, expIdx) => {
           const {
-            expNo = String(expIdx + 1).padStart(2, '0'),
-            date = '',
+            expNo = String(expIdx + 1),
+            date = '07.07.2026',
             title = '',
             aim = '',
             algorithm = '',
@@ -248,7 +248,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
               })
             : [];
 
-          const displayResult = result || (title ? `Thus, using Linux commands, ${title.toLowerCase()} has been done successfully.` : '');
+          const displayResult = result || (title ? `Thus, ${title.toLowerCase()} has been completed successfully.` : '');
 
           // Code chunking
           const allCodeLines = code ? code.split('\n') : [];
@@ -360,10 +360,10 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                                   <td className="exp-header-left-cell">
                                     <div className="exp-header-left-inner">
                                       <div className="exp-header-no">
-                                        EXP. No. {expNo || String(expIdx + 1)}
+                                        EX.NO : {expNo || String(expIdx + 1)}
                                       </div>
                                       <div className="exp-header-date">
-                                        DATE: {date || ''}
+                                        DATE: {date || '07.07.2026'}
                                       </div>
                                     </div>
                                   </td>
