@@ -6,11 +6,11 @@ import PdfDocument from './components/PdfDocument';
 import { exportToPdf } from './utils/pdfExporter';
 
 // Factory for creating a brand new experiment
-export const createNewExperiment = (expNumber = 1) => ({
+export const createNewExperiment = (expNumber = 6) => ({
   id: `exp_${Date.now()}_${expNumber}`,
   expNo: String(expNumber),
-  date: '07.07.2026',
-  title: `EXPERIMENT TITLE ${expNumber}`,
+  date: '',
+  title: `EXPERIMENT ${expNumber} TITLE`,
   aim: '',
   algorithm: '',
   code: '',
@@ -27,138 +27,368 @@ export const createNewExperiment = (expNumber = 1) => ({
   result: ''
 });
 
-// Initial Data Matching Uploaded Target College Laboratory Record (Exp 1 & Exp 2)
+// Full Sample Experiments Dataset Matching Target College Lab Record PDF Exactly
+export const TARGET_SAMPLE_EXPERIMENTS = [
+  {
+    id: 'exp_6',
+    expNo: '6',
+    date: '',
+    title: 'BASH SCRIPT USING BASH VARIABLE',
+    aim: 'To write a Bash shell script to calculate an employee’s basic salary details and arithmetic equation',
+    algorithm: `1. Start the program.
+2. Read the employee name.
+3. Read the basic salary.
+4. Calculate HRA as 20% of the basic salary.
+5. Calculate DA as 10% of the basic salary.
+6. Calculate gross salary = Basic salary + HRA + DA.
+7. Display the employee details and salary.`,
+    codeLabel: 'COMMANDS:',
+    code: `1. To create shell file:
+   $ nano emp.sh
+2. #Scripting
+   echo "Enter employee name:"
+   read name
+   echo "Employee Basic Salary:"
+   read salary
+   da=$((salary * 10 / 100))
+   hra=$((salary * 20 / 100))
+   gross=$((salary + da + hra))
+   echo "Employee name : $name"
+   echo "Employee basic salary : $salary"
+   echo "DA : $da"
+   echo "HRA : $hra"
+   echo "Gross salary : $gross"
+
+3. To give permission to execute:
+   $ chmod +x emp.sh
+
+4. To run the shell:
+   $ ./emp.sh`,
+    outputText: ``,
+    outputImages: [],
+    showEvalTable: true,
+    evalMarks: {
+      programExecution: '',
+      classPerformance: '',
+      viva: '',
+      total: ''
+    },
+    result: 'Thus, using Linux commands, employee gross salary has been found successfully.'
+  },
+  {
+    id: 'exp_7',
+    expNo: '7',
+    date: '',
+    title: 'BASH SCRIPT USING CONDITIONAL STATEMENT',
+    aim: 'To write a Bash shell script to validate the therapy session details such as Patient ID, Patient Name, Age, Gender, Therapist Name, Session Date, Session Time, Username and Password, and check whether valid.',
+    algorithm: `1. Read Patient ID, Patient Name, Age, Gender, Therapist Name, Session Time, Date, Username & Password.
+2. Check whether each required field is empty.
+3. Check whether Age is a number between 1 to 120.
+4. If any field is invalid, display the corresponding error message.`,
+    codeLabel: 'COMMANDS:',
+    code: `1.To create script:
+   $nano emp7.sh
+   #!/bin/bash
+   echo "Basic Therapy Session Login Validation"
+   read -p "Enter Patient ID: " patient_id
+   read -p "Enter Patient Name: " patient_name
+   read -p "Enter Age: " age
+   read -p "Enter Gender (Male/Female/Other): " gender
+   read -p "Enter Therapist Name: " therapist
+   read -p "Enter Session Date: " session_date
+   read -p "Enter Session Time: " session_time
+   read -p "Enter Username: " username
+   read -sp "Enter Password: " password
+   echo
+   valid=1
+   if [ -z "$patient_id" ]; then
+   echo "Error: Patient ID cannot be empty"
+   valid=0
+   fi
+   if [ -z "$patient_name" ]; then
+   echo "Error: Patient name cannot be empty"
+   valid=0
+   fi
+   if ! [[ "$age" =~ ^[0-9]+$ ]] || [ "$age" -lt 1 ] || [ "$age" -gt 120 ]; then
+   echo "Error: Age must be between 1 and 120"
+   valid=0
+   fi
+   if [ -z "$gender" ]; then
+   echo "Error: Gender cannot be empty"
+   valid=0
+   fi
+   if [ -z "$therapist" ]; then
+   echo "Error: Therapist Name cannot be empty"
+   valid=0
+   fi
+   if [ -z "$session_time" ]; then
+   echo "Error: Session Time cannot be empty"
+   valid=0
+   fi
+   if [ -z "$session_date" ]; then
+   echo "Error: Session Date cannot be empty"
+   valid=0
+   fi
+   if [ -z "$username" ]; then
+   echo "Error: Username cannot be empty"
+   valid=0
+   fi
+   if [ -z "$password" ]; then
+   echo "Error: Password cannot be empty"
+   valid=0
+   fi
+   if [ "$valid" -eq 1 ]; then
+   echo "All details are valid"
+   echo "Basic Therapy Session Login Successful!"
+   else
+   echo "Please enter valid details."
+   fi
+
+2.To give execute permission:
+  $ chmod +x emp7.sh
+
+3.To run the script:
+  $ ./emp7.sh`,
+    outputText: ``,
+    outputImages: [],
+    showEvalTable: true,
+    evalMarks: {
+      programExecution: '',
+      classPerformance: '',
+      viva: '',
+      total: ''
+    },
+    result: 'Thus, the login validation script was executed successfully and the therapy session details were validated.'
+  },
+  {
+    id: 'exp_8',
+    expNo: '8',
+    date: '',
+    title: 'BASH SCRIPT USING LOOPS',
+    aim: 'To write a Bash shell script using a loop for user account management..',
+    algorithm: `1. Display a menu for user account management.
+2. Read the user account operation.
+3. Use a loop to repeatedly perform the selected operation.
+4. Create, delete, or display user accounts using appropriate Linux commands.
+5. Continue until the user selects the quit option.`,
+    codeLabel: 'COMMANDS:',
+    code: `1.To create script:
+   $ nano emp8.sh
+   #Scripting:
+   #!/bin/bash
+   echo "User Account Audit"
+   echo
+   echo "1. Username"
+   for user in $(cut -d: -f1 /etc/passwd)
+   do
+   echo "$user"
+   done
+   echo
+   echo "2. USER UID INFORMATION"
+   cat /etc/passwd | while IFS=: read -r username password uid gid fullname home shell
+   do
+   echo "User: $username | UID: $uid"
+   done
+   echo
+   echo "3. Account Status"
+   users=$(cut -d: -f1 /etc/passwd)
+   i=1
+   total=$(echo "$users" | wc -l)
+   until [ $i -gt $total ]
+   do
+   username=$(echo "$users" | sed -n "\${i}p")
+   if passwd -S "$username" 2>/dev/null | grep -q " L "
+   then
+   echo "$username : Locked"
+   else
+   echo "$username : Active"
+   fi
+   i=$((i+1))` + `\n   done\n   echo\n   echo "AUDIT COMPLETE"\n\n2. To give execute permission:\n   $ chmod +x emp8.sh\n\n3. To run the script:\n   $ sh emp8.sh`,
+    outputText: ``,
+    outputImages: [],
+    showEvalTable: true,
+    evalMarks: {
+      programExecution: '',
+      classPerformance: '',
+      viva: '',
+      total: ''
+    },
+    result: 'Thus, the Bash shell script for user account management using a loop has been done successfully.'
+  },
+  {
+    id: 'exp_9',
+    expNo: '9',
+    date: '',
+    title: 'BASH SCRIPT USING FUNCTION',
+    aim: 'To develop a Bash shell script using functions to automate basic administrative tasks in Linux.',
+    algorithm: `1. Write the Bash script.
+2. Define functions for administrative tasks.
+3. Call the required functions.
+4. Display the task result.
+5. Note the outputs.`,
+    codeLabel: 'COMMANDS:',
+    code: `1.$ nano exp9.sh
+   #Scripting:
+   #!/bin/bash
+   dysrm-info()
+   {
+   echo "System Information"
+   echo "Hostname : $(hostname)"
+   echo "Current user : $(whoami)"
+   echo "Date : $(date)"
+   echo "Uptime : $(uptime -p)"
+   }
+   disk-usage()
+   {
+   echo "Disk Usage"
+   df -h
+   }
+   memory-usage()
+   {
+   echo "Memory Usage"
+   free -h
+   }
+   logged-users()
+   {
+   echo "Logged in users"
+   who
+   }
+   running-processes()
+   {
+   echo "Top running process"
+   ps aux --sort=-%cpu | head
+   }
+   dysrm-info
+   disk-usage
+   memory-usage
+   logged-users
+   running-processes
+
+2.$ chmod +x exp9.sh
+3.$ sh exp9.sh`,
+    outputText: ``,
+    outputImages: [],
+    showEvalTable: true,
+    evalMarks: {
+      programExecution: '',
+      classPerformance: '',
+      viva: '',
+      total: ''
+    },
+    result: 'Thus, the Bash shell script using functions to automate basic administrative tasks in Linux has been done successfully.'
+  },
+  {
+    id: 'exp_11',
+    expNo: '11',
+    date: '',
+    title: 'ADMINISTRATIVE PRIVILEDGES USING SUDO',
+    aim: 'To create and manage users and groups and assign Linux privileges using sudo commands.',
+    algorithm: `1. Create a new user with user privileges enabled.
+2. Set the password for the user using passwd.
+3. Create a group using groupadd.
+4. Add the user to the group using usermod.
+5. Add the user to the sudo group to provide administrative privileges.
+6. Verify the new group information using id and getent.`,
+    codeLabel: 'CODING:',
+    code: `1.$nano exp11.sh
+   #Scripting
+   #!/bin/bash
+   echo "User and group management"
+   uname = "student"
+   echo "User created"
+   echo "User added to group"
+   group = "developers"
+   sudo groupadd "group"
+   sudo useradd "group"
+   sudo usermod -aG group "username"
+   sudo usermod -aG sudo "username"
+   id "username"
+   getent group "group"
+
+2.$chmod +x exp11.sh
+3.$sh exp11.sh`,
+    outputText: ``,
+    outputImages: [],
+    showEvalTable: true,
+    evalMarks: {
+      programExecution: '',
+      classPerformance: '',
+      viva: '',
+      total: ''
+    },
+    result: 'Thus to create and manage users and groups and assign Linux privileges using sudo commands done successfully'
+  },
+  {
+    id: 'exp_12',
+    expNo: '12',
+    date: '',
+    title: 'CONFIGURE DISK PARTITION FILE SYSTEM AND STORAGE MANAGEMENT',
+    aim: 'To perform disk partition, create a file system, mount the partition and manage storage in Linux.',
+    algorithm: `1. Identify the disk using lsblk.
+2. Create a partition using fdisk.
+3. Create an ext4 file system using mkfs.
+4. Create a mount point and mount the partition.
+5. Verify storage using df and lsblk.
+6. Unmount the partition.`,
+    codeLabel: 'COMMANDS:',
+    code: `1. To list available disk and partition
+   $ lsblk
+2. To open the fdisk utility to create/manage partition
+   $ sudo fdisk /dev/sdb
+3. Create a new partition inside disk
+   n
+4. Select primary partition type
+   p
+5. Write the partition changes to disk and exit fdisk
+   W
+6. To list available disk and partition
+   $ lsblk
+7. To create an ext4 filesystem
+   $ sudo mkfs.ext4 /dev/sdb1
+8. To mount the partition
+   $ sudo mount /dev/sdb1 /mnt/mydisk
+9. Create the mount-point directory
+   $ sudo mkdir -p /mnt/mydisk
+10. Show disk filesystem space usage in human readable format
+   $ df –h
+11.Create an empty test.txt file in the mounted partition
+   $ sudo touch /mnt/mydisk/test.txt
+12.Write text with permission
+   $ echo "This is my storage test" | sudo tee /mnt/mydisk/test.txt
+13.To display content
+   $ cat /mnt/mydisk/test.txt
+   $ df -h /mnt/mydisk
+15. To unmount
+   $ sudo umount /mnt/mydisk`,
+    outputText: ``,
+    outputImages: [],
+    showEvalTable: true,
+    evalMarks: {
+      programExecution: '',
+      classPerformance: '',
+      viva: '',
+      total: ''
+    },
+    result: 'Thus to perform disk partition, create a file system, mount the partition and manage storage in Linux done successfully'
+  }
+];
+
 export const INITIAL_MULTI_EXPERIMENT_DATA = {
-  studentName: 'DEEPAK A',
-  registerNo: '714025247021',
+  studentName: 'ASHWANT S',
+  registerNo: '714025247009',
   fontFamily: 'Times New Roman',
-  bodyFontSize: 13,
-  codeFontSize: 12.5,
-  titleFontSize: 14.5,
-  imageMaxHeight: 180,
-  imageMaxWidth: 95,
+  bodyFontSize: 11.5,
+  codeFontSize: 11,
+  titleFontSize: 12.5,
+  imageMaxHeight: 220,
+  imageMaxWidth: 96,
   imageAlignment: 'center',
-  imageMarginTop: 4,
+  imageMarginTop: 0,
   imageOffsetX: 0,
-  imageOffsetY: 4,
+  imageOffsetY: 0,
   watermarkText: '',
   activeExpIndex: 0,
-  experiments: [
-    {
-      id: 'exp_1',
-      expNo: '1',
-      date: '07.07.2026',
-      title: 'INSTALLATION OF KALI LINUX USING ORACLE VM VIRTUALBOX',
-      aim: 'To install and configure Kali Linux on Oracle VirtualBox by creating a virtual machine, installing the Kali Linux operating system, and verifying its successful setup for cybersecurity and networking experiments.',
-      algorithm: `OPERATING SYSTEM :
-Definition: An Operating System is system software that manages the computer's hardware and software resources and allows users to interact with the computer.
-
-KALI LINUX:
-Definition: Kali Linux is a Debian-based Linux distribution developed for offensive security. It is specially designed for cybersecurity professionals, ethical hackers, penetration testers, and digital forensic analysts.
-
-Advantages of kali linux:
-• Free and open source
-• Pre-installed security tools
-• Regular updates
-• Highly customizable
-• Strong community support
-
-Disadvantages of Kali Linux:
-• Difficult for beginners
-• Not suitable for daily use
-• Can be misused if used illegally
-• Requires Linux knowledge
-• Some hardware compatibility issues`,
-      codeLabel: 'COMMANDS:',
-      code: `Procedure / Configuration of Kali Linux in VirtualBox:
-
-Step 1: Open Oracle VirtualBox.
-Step 2: Select the New option to create a new virtual machine.
-Step 3: Enter the VM name as Kali Linux and select Linux -> Debian (64-bit).
-Step 4: Allocate 4096 MB RAM and 2 processor cores.
-Step 5: Create a 35 GB dynamically allocated VDI virtual hard disk.
-Step 6: Open Settings -> Storage and attach the downloaded Kali Linux ISO file.
-Step 7: Configure Display by setting 128 MB Video Memory and selecting VMSVGA as graphics controller.
-Step 8: Start the virtual machine and select Graphical Install.
-Step 9: Choose the language, location, and keyboard layout.
-Step 10: Enter the hostname, leave domain blank, and create username and password.
-Step 11: Select Guided - Use Entire Disk, choose the virtual hard disk, confirm partition settings.
-Step 12: Select the Xfce Desktop Environment and default tool selection for software installation.
-Step 13: Install the GRUB Boot Loader on /dev/sda and complete the installation.
-Step 14: Restart the virtual machine and log in using the created username and password.
-Step 15: Now the setup is complete, and Kali Linux is configured in Oracle VirtualBox.`,
-      outputText: ``,
-      outputImages: [],
-      showEvalTable: true,
-      evalMarks: {
-        programExecution: '',
-        classPerformance: '',
-        viva: '',
-        total: ''
-      },
-      result: 'Thus, the installation of Oracle VirtualBox and Kali Linux, and the configuration of Kali Linux in Oracle VirtualBox, has been completed successfully.'
-    },
-    {
-      id: 'exp_2',
-      expNo: '2',
-      date: '07.07.2026',
-      title: 'EXECUTION OF BASIC LINUX COMMANDS',
-      aim: 'To learn and execute for user information directory management, directory navigation and file management.',
-      algorithm: `1. Open the Linux terminal.
-2. Display the current user information.
-3. Display the current working directory.
-4. List files and directories using different ls options.
-5. Navigate between directories using the cd command.
-6. Create new files using the touch command.
-7. Display the contents of the files using suitable commands.
-8. Copy and rename files and directories.
-9. Delete files and directories using suitable commands.
-10. Verify the files and directories after performing the operations.`,
-      codeLabel: 'COMMANDS:',
-      code: `1. Display the current username.
-   whoami
-2. Switch to root user
-   sudo -i
-3. Return to normal user
-   exit
-4. Displays the full path of working directory.
-   pwd
-5. List files and directories.
-   ls
-6. List files and Directories in long formats.
-   ls-l
-7. Lists all files and directories, including hidden files.
-   ls -a
-8. Change the Directory.
-   cd directory_name
-9. Move to parent directory.
-   cd ..
-10. Move to home directory.
-   cd~
-11. Create new directory.
-   mkdir directory_name
-12. To create a file.
-   touch file_name
-13. To work in that file.
-   echo "text"> file_name
-14. Display contents of the file.
-   cat file_name
-15. Remove specified file.
-   rm file_name
-16. Remove specified directory.
-   rmdir directory_name`,
-      outputText: ``,
-      outputImages: [],
-      showEvalTable: true,
-      evalMarks: {
-        programExecution: '',
-        classPerformance: '',
-        viva: '',
-        total: ''
-      },
-      result: 'Thus, the basic Linux commands were executed successfully and the outputs were displayed successfully.'
-    }
-  ]
+  experiments: TARGET_SAMPLE_EXPERIMENTS
 };
 
 export default function App() {
@@ -170,7 +400,7 @@ export default function App() {
   // Sub-Tab inside Workspace Panel ("inputs" or "styling")
   const [editorSubTab, setEditorSubTab] = useState('inputs');
 
-  // Adjustable Panel Split Ratio Width Percentage (default 32%)
+  // Adjustable Panel Split Ratio Width Percentage
   const [leftPanelWidth, setLeftPanelWidth] = useState(32);
   const [isResizing, setIsResizing] = useState(false);
 
@@ -204,7 +434,7 @@ export default function App() {
   // ADD NEW EXPERIMENT FEATURE
   const handleAddExperiment = () => {
     setFormData((prev) => {
-      const nextExpNum = (prev.experiments || []).length + 1;
+      const nextExpNum = (prev.experiments || []).length + 6;
       const newExp = createNewExperiment(nextExpNum);
       const updatedExps = [...(prev.experiments || []), newExp];
       return {
@@ -214,7 +444,6 @@ export default function App() {
       };
     });
 
-    // Auto scroll preview panel to bottom
     setTimeout(() => {
       const previewPanel = document.querySelector('.preview-space-panel');
       if (previewPanel) {
@@ -263,36 +492,9 @@ export default function App() {
     });
   };
 
+  // FILL SAMPLE EXPERIMENT DATA - Restores Full Target Reference Dataset
   const handleFillSample = () => {
-    setFormData((prev) => {
-      const activeIdx = prev.activeExpIndex !== undefined ? prev.activeExpIndex : 0;
-      const sampleExp = INITIAL_MULTI_EXPERIMENT_DATA.experiments[0];
-
-      if (prev.experiments && prev.experiments.length > 0) {
-        const updatedExps = [...prev.experiments];
-        updatedExps[activeIdx] = {
-          ...updatedExps[activeIdx],
-          expNo: updatedExps[activeIdx].expNo || sampleExp.expNo,
-          date: sampleExp.date,
-          title: sampleExp.title,
-          aim: sampleExp.aim,
-          algorithm: sampleExp.algorithm,
-          code: sampleExp.code,
-          codeLabel: sampleExp.codeLabel,
-          outputText: sampleExp.outputText,
-          outputImages: sampleExp.outputImages || [],
-          evalMarks: { ...sampleExp.evalMarks },
-          result: sampleExp.result
-        };
-        return {
-          ...prev,
-          studentName: prev.studentName || INITIAL_MULTI_EXPERIMENT_DATA.studentName,
-          registerNo: prev.registerNo || INITIAL_MULTI_EXPERIMENT_DATA.registerNo,
-          experiments: updatedExps
-        };
-      }
-      return INITIAL_MULTI_EXPERIMENT_DATA;
-    });
+    setFormData(INITIAL_MULTI_EXPERIMENT_DATA);
   };
 
   const handleClearAll = () => {
@@ -302,7 +504,7 @@ export default function App() {
       registerNo: '',
       watermarkText: '',
       activeExpIndex: 0,
-      experiments: [createNewExperiment(1)]
+      experiments: [createNewExperiment(6)]
     }));
   };
 
@@ -432,7 +634,6 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* ADD NEW EXPERIMENT BUTTON IN PREVIEW SPACE */}
               <button
                 onClick={handleAddExperiment}
                 className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/30 transition-all flex items-center gap-1.5 active:scale-95"

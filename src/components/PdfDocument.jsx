@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 
 export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' }) {
   const {
-    studentName = '',
-    registerNo = '',
+    studentName = 'ASHWANT S',
+    registerNo = '714025247009',
     fontFamily = 'Times New Roman',
-    bodyFontSize = 13,
-    codeFontSize = 12.5,
-    titleFontSize = 14.5,
-    imageMaxHeight = 180,
-    imageMaxWidth = 95,
+    bodyFontSize = 11.5,
+    codeFontSize = 11,
+    titleFontSize = 12.5,
+    imageMaxHeight = 220,
+    imageMaxWidth = 96,
     imageAlignment = 'center',
-    imageMarginTop = 4,
+    imageMarginTop = 0,
     imageOffsetX = 0,
-    imageOffsetY = 4,
+    imageOffsetY = 0,
     watermarkText = '',
     experiments = []
   } = data || {};
@@ -32,9 +32,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
   const experimentList = (experiments && experiments.length > 0)
     ? experiments
     : [{
-        expNo: data?.expNo || '1',
-        date: data?.date || '07.07.2026',
-        title: data?.title || 'INSTALLATION OF KALI LINUX USING ORACLE VM VIRTUALBOX',
+        expNo: data?.expNo || '6',
+        date: data?.date || '',
+        title: data?.title || 'BASH SCRIPT USING BASH VARIABLE',
         aim: data?.aim || '',
         algorithm: data?.algorithm || '',
         code: data?.code || '',
@@ -52,25 +52,25 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
     return 'center';
   };
 
-  const activeOffsetY = imageOffsetY !== undefined ? imageOffsetY : (imageMarginTop || 4);
+  const activeOffsetY = imageOffsetY !== undefined ? imageOffsetY : (imageMarginTop || 0);
   const activeOffsetX = imageOffsetX || 0;
 
-  // EXACT CODE SPACE LINE CAPACITY RULES MATCHING TARGET SAMPLE PDF:
-  // Page 1 Code Capacity: 24 lines (with 1.55 line-height)
-  // Continued Page Code Capacity: 30 lines
-  const page1MaxCodeCapacity = 24;
-  const continuationMaxCodeLines = 30;
+  // EXACT TARGET PDF CODE CAPACITY RULES:
+  // Page 1 Code Capacity: 28 lines (accommodates Header, AIM, ALGORITHM, and first 28 lines of code)
+  // Continuation Page Code Capacity: 35 lines
+  const page1MaxCodeCapacity = 28;
+  const continuationMaxCodeLines = 35;
 
   return (
     <div className="relative w-full flex justify-center">
       
-      {/* EXPANDED 4-DIRECTIONAL IMAGE ADJUSTER PANEL (ANCHORED IN LEFT BLACK EMPTY SPACE) */}
+      {/* EXPANDED 4-DIRECTIONAL IMAGE ADJUSTER PANEL */}
       {showImageAdjuster && (
         <div className="fixed left-4 top-20 z-40 w-80 bg-slate-900/95 border border-slate-800 rounded-2xl p-4 shadow-2xl space-y-4 backdrop-blur-md transition-all animate-fadeIn">
           
           <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
             <div className="flex items-center gap-2 text-slate-100 font-bold text-xs">
-              <span>🖼️ High-Range Image Move & Scale</span>
+              <span>🖼️ Image Move & Scale Controls</span>
             </div>
             <button
               onClick={() => setShowImageAdjuster(false)}
@@ -80,11 +80,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
             </button>
           </div>
 
-          {/* 4-Directional Move Pad with Extended Range */}
           <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-3">
             <div className="text-[11px] font-semibold text-slate-200">Extended 4-Way Movement</div>
             
-            {/* Move Up / Down */}
             <div className="space-y-1">
               <div className="flex justify-between text-[10px] text-slate-400 font-medium">
                 <span>Up / Down Offset</span>
@@ -94,7 +92,6 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                 <button
                   onClick={() => handleFieldChange('imageOffsetY', Math.max(-150, activeOffsetY - 10))}
                   className="px-2 py-1 bg-slate-800 text-slate-300 hover:text-white rounded border border-slate-700 text-xs font-bold shrink-0"
-                  title="Move Up"
                 >
                   ⬆️ Up
                 </button>
@@ -110,14 +107,12 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                 <button
                   onClick={() => handleFieldChange('imageOffsetY', Math.min(250, activeOffsetY + 10))}
                   className="px-2 py-1 bg-slate-800 text-slate-300 hover:text-white rounded border border-slate-700 text-xs font-bold shrink-0"
-                  title="Move Down"
                 >
                   ⬇️ Down
                 </button>
               </div>
             </div>
 
-            {/* Move Left / Right */}
             <div className="space-y-1 pt-2 border-t border-slate-800/60">
               <div className="flex justify-between text-[10px] text-slate-400 font-medium">
                 <span>Left / Right Offset</span>
@@ -127,7 +122,6 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                 <button
                   onClick={() => handleFieldChange('imageOffsetX', Math.max(-250, activeOffsetX - 15))}
                   className="px-2 py-1 bg-slate-800 text-slate-300 hover:text-white rounded border border-slate-700 text-xs font-bold shrink-0"
-                  title="Move Left"
                 >
                   ⬅️ Left
                 </button>
@@ -143,7 +137,6 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                 <button
                   onClick={() => handleFieldChange('imageOffsetX', Math.min(250, activeOffsetX + 15))}
                   className="px-2 py-1 bg-slate-800 text-slate-300 hover:text-white rounded border border-slate-700 text-xs font-bold shrink-0"
-                  title="Move Right"
                 >
                   ➡️ Right
                 </button>
@@ -151,7 +144,6 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
             </div>
           </div>
 
-          {/* Image Height Slider */}
           <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between text-[11px]">
               <span className="font-semibold text-slate-200">Image Height (mm)</span>
@@ -162,8 +154,8 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
             <div className="flex items-center gap-2">
               <input
                 type="range"
-                min="20"
-                max="200"
+                min="50"
+                max="260"
                 step="5"
                 value={imageMaxHeight}
                 onChange={(e) => handleFieldChange('imageMaxHeight', parseInt(e.target.value, 10))}
@@ -172,7 +164,6 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
             </div>
           </div>
 
-          {/* Image Width Slider */}
           <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between text-[11px]">
               <span className="font-semibold text-slate-200">Image Width (%)</span>
@@ -183,9 +174,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
             <div className="flex items-center gap-2">
               <input
                 type="range"
-                min="20"
+                min="30"
                 max="100"
-                step="5"
+                step="2"
                 value={imageMaxWidth}
                 onChange={(e) => handleFieldChange('imageMaxWidth', parseInt(e.target.value, 10))}
                 className="w-full accent-cyan-500 cursor-pointer"
@@ -197,9 +188,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
             <button
               onClick={() => {
                 handleFieldChange('imageOffsetX', 0);
-                handleFieldChange('imageOffsetY', 4);
-                handleFieldChange('imageMaxHeight', 180);
-                handleFieldChange('imageMaxWidth', 95);
+                handleFieldChange('imageOffsetY', 0);
+                handleFieldChange('imageMaxHeight', 220);
+                handleFieldChange('imageMaxWidth', 96);
               }}
               className="flex-1 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors"
             >
@@ -224,7 +215,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
         {experimentList.map((expItem, expIdx) => {
           const {
             expNo = String(expIdx + 1),
-            date = '07.07.2026',
+            date = '',
             title = '',
             aim = '',
             algorithm = '',
@@ -237,7 +228,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
             result = ''
           } = expItem || {};
 
-          // Algorithm steps
+          // Algorithm steps parsing
           const parsedAlgorithm = algorithm
             ? algorithm.split('\n').filter((line) => line.trim().length > 0).map((line, idx) => {
                 const match = line.match(/^(\d+[\.\)]?)\s*(.*)/);
@@ -248,60 +239,63 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
               })
             : [];
 
-          const displayResult = result || (title ? `Thus, ${title.toLowerCase()} has been completed successfully.` : '');
+          const displayResult = result || (title ? `Thus, using Linux commands, ${title.toLowerCase()} has been done successfully.` : '');
 
-          // Code chunking
+          // Code chunking: Page 1 gets up to page1MaxCodeCapacity (28 lines).
+          // Continuation written pages get continuationMaxCodeLines (35 lines).
           const allCodeLines = code ? code.split('\n') : [];
           const codeChunks = [];
 
-          if (allCodeLines.length === 0) {
-            codeChunks.push('');
-          } else {
-            const page1CodeSlice = allCodeLines.slice(0, page1MaxCodeCapacity);
-            codeChunks.push(page1CodeSlice.join('\n'));
+          const page1CodeSlice = allCodeLines.slice(0, page1MaxCodeCapacity);
+          codeChunks.push(page1CodeSlice.join('\n'));
 
-            let remIndex = page1CodeSlice.length;
-            while (remIndex < allCodeLines.length) {
-              const chunkLines = allCodeLines.slice(remIndex, remIndex + continuationMaxCodeLines);
-              codeChunks.push(chunkLines.join('\n'));
-              remIndex += continuationMaxCodeLines;
-            }
+          let remIndex = page1CodeSlice.length;
+          while (remIndex < allCodeLines.length) {
+            const chunkLines = allCodeLines.slice(remIndex, remIndex + continuationMaxCodeLines);
+            codeChunks.push(chunkLines.join('\n'));
+            remIndex += continuationMaxCodeLines;
           }
 
-          // Output chunking
-          const allOutputLines = outputText ? outputText.split('\n') : [];
-          const hasImages = Boolean(outputImages && outputImages.length > 0);
+          // If code fits on Page 1, codeChunks has 1 item.
+          // BUT in the target PDF record, every experiment has at least 2 written pages:
+          // Written Page 1: Theory & Commands (Part 1)
+          // Written Page 2: Continuation Commands (if any) + EVALUATION TABLE + RESULT.
+          // So codeChunks must have at least 2 entries (entry 1 is '' if no continuation code).
+          if (codeChunks.length < 2) {
+            codeChunks.push('');
+          }
+
+          // Output Screenshots chunking:
+          // Output Page 1 (Even) gets screenshot 1 / console output text.
+          // Output Page 2 (Even) gets screenshot 2 (if any) or blank leaf.
+          const currentImagesList = outputImages || [];
           const outputPagesList = [];
 
-          const maxLinesFirstOutputPage = 50;
-          const maxLinesContinuationOutputPage = 50;
-
-          if (allOutputLines.length === 0 && !hasImages) {
+          if (currentImagesList.length === 0) {
+            // Screenshot 1 is console output text or empty
+            outputPagesList.push({ text: outputText || '', images: [] });
+            // Output page 2 is clean blank leaf
             outputPagesList.push({ text: '', images: [] });
           } else {
-            let remIndex = 0;
-            while (remIndex < allOutputLines.length || (remIndex === 0 && hasImages)) {
-              const isFirst = outputPagesList.length === 0;
-              const limit = isFirst ? maxLinesFirstOutputPage : maxLinesContinuationOutputPage;
-              const textSlice = allOutputLines.slice(remIndex, remIndex + limit).join('\n');
-              remIndex += limit;
-
-              const isLast = remIndex >= allOutputLines.length;
-              outputPagesList.push({
-                text: textSlice,
-                images: isLast && hasImages ? outputImages : []
-              });
+            // Distribute images across output pages (1 per output page or stacked if multiple)
+            outputPagesList.push({ text: outputText || '', images: [currentImagesList[0]] });
+            if (currentImagesList.length > 1) {
+              outputPagesList.push({ text: '', images: currentImagesList.slice(1) });
+            } else {
+              outputPagesList.push({ text: '', images: [] });
             }
           }
 
-          const totalPagePairs = Math.max(codeChunks.length, outputPagesList.length);
+          // Total Page Pairs: Every experiment has AT LEAST 2 pairs (4 pages = 2 written odd pages, 2 output even pages)
+          const totalPagePairs = Math.max(codeChunks.length, outputPagesList.length, 2);
 
           return (
             <React.Fragment key={expItem.id || expIdx}>
               {Array.from({ length: totalPagePairs }).map((_, pagePairIdx) => {
-                const codeChunk = codeChunks[pagePairIdx] || '';
+                const codeChunk = codeChunks[pagePairIdx] !== undefined ? codeChunks[pagePairIdx] : '';
                 const isFirstCodePage = pagePairIdx === 0;
-                const isFinalCodePage = pagePairIdx === codeChunks.length - 1;
+                // The final written page is ALWAYS the last pair in the experiment
+                const isFinalWrittenPage = pagePairIdx === totalPagePairs - 1;
                 
                 const outputPageData = outputPagesList[pagePairIdx];
                 const currentOutputChunk = outputPageData?.text || '';
@@ -310,11 +304,11 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                 return (
                   <React.Fragment key={`${expIdx}-${pagePairIdx}`}>
                     
-                    {/* ODD PAGES (CODE & EXPERIMENT METADATA) */}
-                    <div className="a4-page" id={`experiment-page-${expIdx}`} style={{ fontFamily: currentFontFamily }}>
+                    {/* ODD PAGES (WRITTEN PAGES: EXP METADATA, AIM, ALGORITHM, COMMANDS, EVAL TABLE, RESULT) */}
+                    <div className="a4-page" id={`experiment-page-${expIdx}-${pagePairIdx}`} style={{ fontFamily: currentFontFamily }}>
                       <div className="a4-inner-border relative flex flex-col justify-between h-full overflow-hidden">
                         
-                        {/* Watermark */}
+                        {/* Watermark (if set) */}
                         {watermarkText && (
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 opacity-10">
                             <span className="text-5xl font-extrabold uppercase tracking-widest text-black transform -rotate-45">
@@ -323,36 +317,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                           </div>
                         )}
 
-                        {/* EVALUATION MARKS TABLE - ANCHORED AT BOTTOM RIGHT OF FINAL PAGE */}
-                        {isFinalCodePage && (showEvalTable !== false) && (
-                          <div className="eval-table-wrapper-absolute">
-                            <table className="eval-table" style={{ fontFamily: currentFontFamily }}>
-                              <tbody>
-                                <tr>
-                                  <td className="eval-label">PROGRAM AND EXECUTION</td>
-                                  <td className="eval-marks">{evalMarks?.programExecution || ''}</td>
-                                </tr>
-                                <tr>
-                                  <td className="eval-label">CLASS PERFORMANCE</td>
-                                  <td className="eval-marks">{evalMarks?.classPerformance || ''}</td>
-                                </tr>
-                                <tr>
-                                  <td className="eval-label">VIVA</td>
-                                  <td className="eval-marks">{evalMarks?.viva || ''}</td>
-                                </tr>
-                                <tr>
-                                  <td className="eval-label">TOTAL</td>
-                                  <td className="eval-marks">{evalMarks?.total || ''}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        )}
-
-                        {/* TOP SECTION: EXP HEADER TABLE */}
+                        {/* TOP SECTION: EXP HEADER TABLE (ONLY ON PAGE 1 OF EXPERIMENT) */}
                         <div className="relative z-10 doc-top-content flex-1 flex flex-col overflow-hidden">
                           
-                          {/* EXP Header Box Table ONLY on Page 1 of each experiment */}
                           {isFirstCodePage && (
                             <table className="exp-header-table" style={{ fontFamily: currentFontFamily }}>
                               <tbody>
@@ -360,10 +327,10 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                                   <td className="exp-header-left-cell">
                                     <div className="exp-header-left-inner">
                                       <div className="exp-header-no">
-                                        EX.NO : {expNo || String(expIdx + 1)}
+                                        EXP. No. {expNo || String(expIdx + 1)}
                                       </div>
                                       <div className="exp-header-date">
-                                        DATE: {date || '07.07.2026'}
+                                        DATE: {date || ''}
                                       </div>
                                     </div>
                                   </td>
@@ -375,9 +342,10 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                             </table>
                           )}
 
-                          {/* DOCUMENT BODY CONTENT WITH PADDING */}
+                          {/* WRITTEN BODY CONTENT WITH ACCURATE INDENTATION & SPACING */}
                           <div className="doc-body-wrapper">
-                            {/* AIM */}
+                            
+                            {/* AIM (PAGE 1 ONLY) */}
                             {isFirstCodePage && aim && (
                               <div className="doc-section">
                                 <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>AIM:</div>
@@ -385,7 +353,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                               </div>
                             )}
 
-                            {/* ALGORITHM */}
+                            {/* ALGORITHM (PAGE 1 ONLY) */}
                             {isFirstCodePage && parsedAlgorithm.length > 0 && (
                               <div className="doc-section">
                                 <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>ALGORITHM:</div>
@@ -400,9 +368,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                               </div>
                             )}
 
-                            {/* CODING / COMMANDS */}
-                            {(codeChunk || (pagePairIdx < codeChunks.length)) && (
-                              <div className="doc-section flex-1 flex flex-col" style={{ marginTop: !isFirstCodePage ? '0' : '4px', paddingBottom: '4px' }}>
+                            {/* COMMANDS / CODING */}
+                            {codeChunk && (
+                              <div className="doc-section flex-1 flex flex-col" style={{ marginTop: !isFirstCodePage ? '8px' : '4px', paddingBottom: '4px' }}>
                                 {isFirstCodePage && (
                                   <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>
                                     {codeLabel || 'COMMANDS:'}
@@ -414,18 +382,50 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                           </div>
                         </div>
 
-                        {/* BOTTOM SECTION: RESULT STATEMENT */}
+                        {/* BOTTOM SECTION: EVALUATION TABLE & RESULT (ONLY ON THE FINAL WRITTEN PAGE OF THE EXPERIMENT) */}
                         <div className="relative z-10 doc-bottom-content">
                           
-                          {/* RESULT STATEMENT */}
-                          {isFinalCodePage && displayResult && (
-                            <div className="doc-section doc-result-section">
-                              <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>RESULT:</div>
-                              <div className="doc-text" style={{ fontSize: `${bodyFontSize}px`, fontFamily: currentFontFamily }}>{displayResult}</div>
+                          {isFinalWrittenPage && (
+                            <div className="eval-and-result-block">
+                              
+                              {/* EVALUATION MARKS TABLE - RIGHT ALIGNED */}
+                              {(showEvalTable !== false) && (
+                                <div className="eval-table-container">
+                                  <table className="eval-table" style={{ fontFamily: currentFontFamily }}>
+                                    <tbody>
+                                      <tr>
+                                        <td className="eval-label">PROGRAM AND EXECUTION</td>
+                                        <td className="eval-marks">{evalMarks?.programExecution || ''}</td>
+                                      </tr>
+                                      <tr>
+                                        <td className="eval-label">CLASS PERFORMANCE</td>
+                                        <td className="eval-marks">{evalMarks?.classPerformance || ''}</td>
+                                      </tr>
+                                      <tr>
+                                        <td className="eval-label">VIVA</td>
+                                        <td className="eval-marks">{evalMarks?.viva || ''}</td>
+                                      </tr>
+                                      <tr>
+                                        <td className="eval-label">TOTAL</td>
+                                        <td className="eval-marks">{evalMarks?.total || ''}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              )}
+
+                              {/* RESULT STATEMENT */}
+                              {displayResult && (
+                                <div className="doc-section doc-result-section">
+                                  <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>RESULT:</div>
+                                  <div className="doc-text" style={{ fontSize: `${bodyFontSize}px`, fontFamily: currentFontFamily }}>{displayResult}</div>
+                                </div>
+                              )}
+
                             </div>
                           )}
 
-                          {/* FOOTER */}
+                          {/* FOOTER - STUDENT NAME (LEFT) & REGISTER NO (RIGHT) */}
                           <div className="doc-footer" style={{ fontFamily: currentFontFamily }}>
                             <span>{studentName}</span>
                             <span>{registerNo}</span>
@@ -435,7 +435,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                       </div>
                     </div>
 
-                    {/* EVEN PAGES (OUTPUT / SCREENSHOT WORKSPACE) */}
+                    {/* EVEN PAGES (OUTPUT SCREENSHOTS / CONSOLE / BLANK LEAF) */}
                     <div className="a4-page" style={{ fontFamily: currentFontFamily }}>
                       <div className="a4-inner-border relative flex flex-col justify-between h-full overflow-hidden">
                         
@@ -448,20 +448,20 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                           </div>
                         )}
 
-                        {/* TOP SECTION EVEN PAGE: OUTPUT ONLY */}
+                        {/* TOP SECTION EVEN PAGE: OUTPUT SCREENSHOT OR CONSOLE TEXT */}
                         <div className="relative z-10 doc-top-content flex-1 flex flex-col overflow-hidden">
                           <div className="doc-body-wrapper pt-3 flex-1 flex flex-col overflow-hidden">
                             <div className="doc-section flex-1 flex flex-col overflow-hidden">
-                              {(currentOutputChunk || (currentImages && currentImages.length > 0)) && (
-                                <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>OUTPUT:</div>
-                              )}
-
-                              {/* Console Text Output */}
+                              
+                              {/* Optional Console Output Text Header */}
                               {currentOutputChunk && (
-                                <pre className="doc-output-text" style={{ fontSize: `${codeFontSize}px`, fontFamily: currentFontFamily }}>{currentOutputChunk}</pre>
+                                <>
+                                  <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>OUTPUT:</div>
+                                  <pre className="doc-output-text" style={{ fontSize: `${codeFontSize}px`, fontFamily: currentFontFamily }}>{currentOutputChunk}</pre>
+                                </>
                               )}
 
-                              {/* Output Plot / Screenshot Image */}
+                              {/* Terminal Screenshot Image (Centered Vertically and Horizontally) */}
                               {currentImages && currentImages.length > 0 && (
                                 <div
                                   className="doc-output-image-container flex-1"
@@ -476,15 +476,15 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                                       key={i}
                                       onClick={() => setShowImageAdjuster(true)}
                                       className="relative group cursor-pointer"
-                                      title="Click image to open extended 4-directional controls in left panel"
+                                      title="Click image to open positioning controls"
                                     >
                                       <img
                                         src={imgUrl}
-                                        alt={`Output Plot / Screenshot ${i + 1}`}
+                                        alt={`Terminal Screenshot ${i + 1}`}
                                         className="doc-output-image transition-all hover:ring-2 hover:ring-blue-500 hover:shadow-lg"
                                         style={{
-                                          maxHeight: `${imageMaxHeight || 180}mm`,
-                                          maxWidth: `${imageMaxWidth || 95}%`,
+                                          maxHeight: `${imageMaxHeight || 220}mm`,
+                                          maxWidth: `${imageMaxWidth || 96}%`,
                                           marginBottom: i < currentImages.length - 1 ? '12px' : '0'
                                         }}
                                       />

@@ -265,7 +265,7 @@ html, body {
   width: 210mm;
 }
 
-/* COLLEGE LABORATORY RECORD A4 PAGE FORMATTING (EXACT TARGET SAMPLE PDF MATCH: 210mm x 297mm) */
+/* COLLEGE LABORATORY RECORD A4 PAGE FORMATTING (EXACT TARGET PDF MATCH: 210mm x 297mm) */
 .a4-page {
   width: 210mm;
   height: 297mm;
@@ -274,7 +274,7 @@ html, body {
   background-color: #ffffff;
   color: #000000;
   font-family: 'Times New Roman', Times, serif;
-  padding: 12mm 14mm;
+  padding: 10mm 12mm;
   margin: 0 auto;
   box-shadow: var(--shadow-paper);
   position: relative;
@@ -309,13 +309,12 @@ html, body {
   position: relative;
 }
 
-/* Header Table (EX.NO :, DATE:, TITLE) - MATCHING TARGET COLLEGE LABORATORY RECORD */
+/* Header Table (EXP NO, DATE, TITLE) - MATCHING TARGET COLLEGE LABORATORY RECORD */
 .exp-header-table {
   width: 100%;
   margin: 0;
-  margin-bottom: 14px;
   border-collapse: collapse;
-  font-family: inherit;
+  font-family: 'Times New Roman', Times, serif;
   background-color: #ffffff;
 }
 
@@ -338,7 +337,7 @@ html, body {
 }
 
 .exp-header-left-cell {
-  width: 28%;
+  width: 24%;
   vertical-align: top;
 }
 
@@ -350,28 +349,28 @@ html, body {
 
 .exp-header-no {
   font-weight: bold;
-  font-size: 13.5px;
-  padding: 10px 14px;
+  font-size: 13px;
+  padding: 8px 12px;
   border-bottom: 1.5px solid #000000;
   color: #000000;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .exp-header-date {
   font-weight: bold;
-  font-size: 13.5px;
-  padding: 10px 14px;
+  font-size: 13px;
+  padding: 8px 12px;
   color: #000000;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .exp-header-title {
-  width: 72%;
+  width: 76%;
   text-align: center;
   font-weight: bold;
-  font-size: 15.5px;
-  padding: 14px 16px !important;
-  line-height: 1.45;
+  font-size: 14px;
+  padding: 10px 14px !important;
+  line-height: 1.35;
   vertical-align: middle;
   word-wrap: break-word;
   color: #000000;
@@ -382,7 +381,7 @@ html, body {
 .doc-top-content {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -394,11 +393,11 @@ html, body {
 .doc-body-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  padding: 0 18px;
+  padding: 12px 22px 6px 22px;
 }
 
 .doc-bottom-content {
@@ -406,34 +405,116 @@ html, body {
   flex-direction: column;
   margin-top: auto;
   flex-shrink: 0;
-  padding: 4px 18px 12px 18px;
+  padding: 4px 22px 10px 22px;
   position: relative;
   z-index: 2;
 }
 
-/* EVALUATION BOX TABLE - ANCHORED ON RIGHT OF FINAL PAGE (MATCHING TARGET SAMPLE PDF) */
-.eval-table-wrapper-absolute {
-  position: absolute;
-  right: 18px;
-  bottom: 110px;
-  z-index: 1;
-  width: 310px;
-  background-color: transparent;
+/* Section Headings (AIM:, ALGORITHM:, COMMANDS:, CODING:, RESULT:) */
+.doc-section {
+  margin-bottom: 8px;
+}
+
+.doc-section-title {
+  font-weight: bold;
+  font-size: 12.5px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  color: #000000;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.doc-body-wrapper > .doc-section:first-child .doc-section-title {
+  margin-top: 2px;
+}
+
+/* Body Text (Indented 28px matching target PDF) */
+.doc-text {
+  font-size: 11.5px;
+  line-height: 1.45;
+  text-align: justify;
+  margin-left: 28px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #000000;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* Algorithm Grid (Indented 28px matching target PDF) */
+.doc-algorithm-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 3px;
+  column-gap: 10px;
+  margin-left: 28px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #000000;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.doc-algorithm-num {
+  font-weight: normal;
+  text-align: left;
+  min-width: 16px;
+}
+
+.doc-algorithm-text {
+  text-align: left;
+}
+
+/* CODING AND COMMANDS TEXT STYLED IN ACADEMIC RECORD TIMES NEW ROMAN FORMATTING */
+.doc-code-block {
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: 11px;
+  line-height: 1.32;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin-left: 28px;
+  color: #000000;
+  tab-size: 4;
+  flex: 1;
+}
+
+.doc-output-text {
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: 11px;
+  line-height: 1.32;
+  white-space: pre;
+  overflow-x: auto;
+  margin-left: 28px;
+  margin-bottom: 8px;
+  color: #000000;
+  tab-size: 4;
+}
+
+/* EVALUATION BOX TABLE & RESULT ON FINAL WRITTEN PAGE */
+.eval-and-result-block {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+}
+
+.eval-table-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
 }
 
 .eval-table {
-  width: 100%;
+  width: 340px;
   border-collapse: collapse;
   background-color: transparent;
-  font-family: inherit;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .eval-table td {
   border: 1.5px solid #000000;
-  padding: 5px 10px;
-  font-size: 11.5px;
+  padding: 4px 8px;
+  font-size: 11px;
   font-weight: bold;
-  height: 28px;
+  height: 25px;
   vertical-align: middle;
   background-color: transparent;
 }
@@ -452,109 +533,39 @@ html, body {
   position: relative;
   z-index: 2;
   background-color: transparent;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
-.doc-section {
-  margin-bottom: 8px;
-}
-
-.doc-section-title {
-  font-weight: bold;
-  font-size: 14.5px;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  color: #000000;
-}
-
-.doc-text {
-  font-size: 13px;
-  line-height: 1.55;
-  text-align: justify;
-  margin-left: 16px;
-  white-space: pre-wrap;
-  word-break: break-word;
-  color: #000000;
-}
-
-.doc-algorithm-grid {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  row-gap: 4px;
-  column-gap: 8px;
-  margin-left: 16px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: #000000;
-}
-
-.doc-algorithm-num {
-  font-weight: bold;
-  text-align: right;
-  min-width: 18px;
-}
-
-.doc-algorithm-text {
-  text-align: left;
-}
-
-/* COMMANDS AND CODE TEXT STYLED IN ACADEMIC RECORD FORMATTING WITH MATCHING SPACING */
-.doc-code-block {
-  font-family: inherit;
-  font-size: 12.5px;
-  line-height: 1.55;
-  white-space: pre-wrap;
-  word-break: break-all;
-  margin-left: 16px;
-  color: #000;
-  tab-size: 4;
-  flex: 1;
-  height: 100%;
-}
-
-.doc-output-text {
-  font-family: inherit;
-  font-size: 12.5px;
-  line-height: 1.55;
-  white-space: pre;
-  overflow-x: auto;
-  margin-left: 16px;
-  margin-bottom: 10px;
-  color: #000;
-  tab-size: 4;
-}
-
+/* Screenshot image container on Even Pages */
 .doc-output-image-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 6px 0;
+  margin: auto 0;
   width: 100%;
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  padding: 10px;
 }
 
 .doc-output-image {
-  max-width: 95%;
-  max-height: 180mm;
+  max-width: 96%;
+  max-height: 220mm;
   object-fit: contain;
-  border: 1.5px solid #000000;
-  padding: 4px;
-  background-color: #ffffff;
   margin: 0 auto;
 }
 
+/* Footer (Student Name & Register Number) */
 .doc-footer {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  font-weight: bold;
-  font-size: 12px;
-  padding-top: 4px;
-  margin-top: auto;
-  font-family: inherit;
+  align-items: center;
+  padding-top: 6px;
+  font-weight: normal;
+  font-size: 11px;
+  font-family: 'Times New Roman', Times, serif;
   color: #000000;
 }
 
