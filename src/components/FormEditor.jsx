@@ -257,6 +257,9 @@ export default function FormEditor({
             >
               <option value="COMMANDS:">Heading: COMMANDS:</option>
               <option value="CODING:">Heading: CODING:</option>
+              <option value="PROGRAM:">Heading: PROGRAM:</option>
+              <option value="SOURCE CODE:">Heading: SOURCE CODE:</option>
+              <option value="SQL QUERIES:">Heading: SQL QUERIES:</option>
             </select>
             <button
               onClick={handleCopyCode}
