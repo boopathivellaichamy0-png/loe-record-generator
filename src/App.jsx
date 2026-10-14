@@ -61,22 +61,21 @@ export const TARGET_SAMPLE_EXPERIMENTS = [
     code: `1. To create shell file:
    $ nano emp.sh
 2. #Scripting
-   echo "Enter employee name:"
-   read name
-   echo "Employee Basic Salary:"
-   read salary
-   da=$((salary * 10 / 100))
-   hra=$((salary * 20 / 100))
-   gross=$((salary + da + hra))
-   echo "Employee name : $name"
-   echo "Employee basic salary : $salary"
-   echo "DA : $da"
-   echo "HRA : $hra"
-   echo "Gross salary : $gross"
+       echo "Enter employee name:"
+       read name
+       echo "Employee Basic Salary:"
+       read salary
+       da=$((salary * 10 / 100))
+       hra=$((salary * 20 / 100))
+       gross=$((salary + da + hra))
+       echo "Employee name : $name"
+       echo "Employee basic salary : $salary"
+       echo "DA : $da"
+       echo "HRA : $hra"
+       echo "Gross salary : $gross"
 
 3. To give permission to execute:
    $ chmod +x emp.sh
-
 4. To run the shell:
    $ ./emp.sh`,
     outputText: ``,
@@ -392,9 +391,9 @@ export const INITIAL_MULTI_EXPERIMENT_DATA = {
   studentName: 'ASHWANT S',
   registerNo: '714025247009',
   fontFamily: 'Times New Roman',
-  bodyFontSize: 11.5,
+  bodyFontSize: 11,
   codeFontSize: 11,
-  titleFontSize: 12.5,
+  titleFontSize: 13,
   imageMaxHeight: 220,
   imageMaxWidth: 96,
   imageAlignment: 'center',

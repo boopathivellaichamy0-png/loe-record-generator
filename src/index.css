@@ -337,7 +337,7 @@ html, body {
 }
 
 .exp-header-left-cell {
-  width: 24%;
+  width: 22%;
   vertical-align: top;
 }
 
@@ -350,7 +350,11 @@ html, body {
 .exp-header-no {
   font-weight: bold;
   font-size: 13px;
-  padding: 8px 12px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
   border-bottom: 1.5px solid #000000;
   color: #000000;
   line-height: 1.25;
@@ -359,18 +363,24 @@ html, body {
 .exp-header-date {
   font-weight: bold;
   font-size: 13px;
-  padding: 8px 12px;
+  height: 60px;
+  min-height: 60px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: flex-start;
   color: #000000;
   line-height: 1.25;
 }
 
 .exp-header-title {
-  width: 76%;
+  width: 78%;
   text-align: center;
   font-weight: bold;
-  font-size: 14px;
-  padding: 10px 14px !important;
-  line-height: 1.35;
+  font-size: 14.5px;
+  height: 104px;
+  min-height: 104px;
+  padding: 16px 22px !important;
+  line-height: 1.4;
   vertical-align: middle;
   word-wrap: break-word;
   color: #000000;
@@ -397,7 +407,7 @@ html, body {
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  padding: 12px 22px 6px 22px;
+  padding: 26px 20px 8px 20px;
 }
 
 .doc-bottom-content {
@@ -405,20 +415,20 @@ html, body {
   flex-direction: column;
   margin-top: auto;
   flex-shrink: 0;
-  padding: 4px 22px 10px 22px;
+  padding: 4px 20px 10px 20px;
   position: relative;
   z-index: 2;
 }
 
 /* Section Headings (AIM:, ALGORITHM:, COMMANDS:, CODING:, RESULT:) */
 .doc-section {
-  margin-bottom: 8px;
+  margin-bottom: 22px;
 }
 
 .doc-section-title {
   font-weight: bold;
-  font-size: 12.5px;
-  margin-top: 14px;
+  font-size: 13px;
+  margin-top: 0;
   margin-bottom: 8px;
   text-transform: uppercase;
   color: #000000;
@@ -426,30 +436,30 @@ html, body {
 }
 
 .doc-body-wrapper > .doc-section:first-child .doc-section-title {
-  margin-top: 2px;
+  margin-top: 0;
 }
 
-/* Body Text (Indented 28px matching target PDF) */
+/* Body Text (Indented 48px matching original target PDF) */
 .doc-text {
-  font-size: 11.5px;
+  font-size: 11px;
   line-height: 1.45;
-  text-align: justify;
-  margin-left: 28px;
+  text-align: left;
+  margin-left: 48px;
   white-space: pre-wrap;
-  word-break: break-word;
+  word-break: normal;
   color: #000000;
   font-family: 'Times New Roman', Times, serif;
 }
 
-/* Algorithm Grid (Indented 28px matching target PDF) */
+/* Algorithm Grid (Indented 48px matching original target PDF) */
 .doc-algorithm-grid {
   display: grid;
-  grid-template-columns: auto 1fr;
-  row-gap: 3px;
-  column-gap: 10px;
-  margin-left: 28px;
-  font-size: 11.5px;
-  line-height: 1.4;
+  grid-template-columns: 24px 1fr;
+  row-gap: 5px;
+  column-gap: 8px;
+  margin-left: 48px;
+  font-size: 11px;
+  line-height: 1.45;
   color: #000000;
   font-family: 'Times New Roman', Times, serif;
 }
@@ -457,21 +467,22 @@ html, body {
 .doc-algorithm-num {
   font-weight: normal;
   text-align: left;
-  min-width: 16px;
+  min-width: 20px;
 }
 
 .doc-algorithm-text {
   text-align: left;
+  line-height: 1.45;
 }
 
 /* CODING AND COMMANDS TEXT STYLED IN ACADEMIC RECORD TIMES NEW ROMAN FORMATTING */
 .doc-code-block {
   font-family: 'Times New Roman', Times, serif !important;
   font-size: 11px;
-  line-height: 1.32;
+  line-height: 1.38;
   white-space: pre-wrap;
   word-break: break-all;
-  margin-left: 28px;
+  margin-left: 48px;
   color: #000000;
   tab-size: 4;
   flex: 1;
