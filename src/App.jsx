@@ -4,6 +4,19 @@ import Sidebar from './components/Sidebar';
 import FormEditor from './components/FormEditor';
 import PdfDocument from './components/PdfDocument';
 import { exportToPdf } from './utils/pdfExporter';
+import { 
+  FileText, 
+  Sliders, 
+  Plus, 
+  Eye, 
+  BookOpen, 
+  Scroll, 
+  ZoomIn, 
+  ZoomOut, 
+  RotateCcw, 
+  Download, 
+  Loader2 
+} from 'lucide-react';
 
 // Factory for creating a brand new experiment
 export const createNewExperiment = (expNumber = 6) => ({
@@ -544,43 +557,46 @@ export default function App() {
         
         {/* LEFT PANE: WORKSPACE & INPUT DETAILS EDITOR */}
         <div
-          className="h-1/2 md:h-full overflow-y-auto bg-slate-950 flex flex-col shrink-0"
+          className="h-1/2 md:h-full overflow-y-auto bg-slate-950 flex flex-col shrink-0 border-r border-white/[0.06]"
           style={{ width: window.innerWidth >= 768 ? `${leftPanelWidth}%` : '100%' }}
         >
           {/* Sub-Nav Bar inside Left Editor Panel */}
-          <div className="w-full px-4 py-3 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between sticky top-0 z-20 backdrop-blur-md">
+          <div className="w-full px-4 py-2.5 bg-slate-950/80 border-b border-white/[0.08] flex items-center justify-between sticky top-0 z-20 backdrop-blur-xl">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-300">📝 Workspace Editor:</span>
-              <div className="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800">
+              <div className="flex items-center bg-slate-900/90 p-1 rounded-xl border border-white/[0.08] shadow-inner">
                 <button
                   onClick={() => setEditorSubTab('inputs')}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 ${
                     editorSubTab === 'inputs'
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-indigo-600/30'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  <span>📋</span>
-                  <span>Inputs</span>
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>Experiment Data</span>
                 </button>
 
                 <button
                   onClick={() => setEditorSubTab('styling')}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 ${
                     editorSubTab === 'styling'
-                      ? 'bg-purple-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  <span>⚙️</span>
-                  <span>Styling</span>
+                  <Sliders className="w-3.5 h-3.5" />
+                  <span>Typography & Print</span>
                 </button>
               </div>
+            </div>
+
+            <div className="text-[11px] font-mono text-slate-500 hidden sm:block">
+              Auto-saved
             </div>
           </div>
 
           {/* Form Editor or Sidebar */}
-          <div className="p-3 sm:p-4 overflow-y-auto flex-1">
+          <div className="p-3 sm:p-5 overflow-y-auto flex-1">
             {editorSubTab === 'inputs' ? (
               <FormEditor
                 data={formData}
@@ -612,76 +628,85 @@ export default function App() {
         {/* INTERACTIVE DRAGGABLE RESIZER HANDLE */}
         <div
           onMouseDown={startResizing}
-          className={`hidden md:flex w-2.5 h-full bg-slate-900 hover:bg-blue-600 cursor-col-resize items-center justify-center shrink-0 border-x border-slate-800 transition-colors z-20 group ${
-            isResizing ? 'bg-blue-600' : ''
+          className={`hidden md:flex w-2.5 h-full bg-slate-950 hover:bg-indigo-600/60 cursor-col-resize items-center justify-center shrink-0 border-x border-white/[0.06] transition-all z-20 group ${
+            isResizing ? 'bg-indigo-600 shadow-[0_0_15px_rgba(99,102,241,0.5)]' : ''
           }`}
-          title="Click and drag left or right to adjust Workspace & Preview panel widths"
+          title="Click and drag to adjust Workspace & Preview widths"
         >
-          <div className="w-1 h-10 bg-slate-600 group-hover:bg-white rounded-full transition-colors" />
+          <div className="w-0.5 h-8 bg-slate-700 group-hover:bg-white rounded-full transition-colors" />
         </div>
 
         {/* RIGHT PANE: LIVE DOCUMENT PREVIEW CANVAS WITH MULTI-EXPERIMENT ADD BUTTON */}
         <div
-          className="flex-1 h-1/2 md:h-full overflow-x-auto overflow-y-auto preview-space-panel flex flex-col items-center p-3 sm:p-6"
+          className="flex-1 h-1/2 md:h-full overflow-x-auto overflow-y-auto preview-space-panel flex flex-col items-center p-3 sm:p-6 bg-[#06080d] bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px]"
           style={{ width: window.innerWidth >= 768 ? `${100 - leftPanelWidth}%` : '100%' }}
         >
           
-          {/* Sticky Preview Controls Header */}
-          <div className="flex flex-wrap items-center justify-between gap-2 w-full max-w-[440mm] mb-4 bg-slate-900/90 p-3 rounded-xl border border-slate-800 backdrop-blur-md shrink-0 shadow-lg sticky top-0 z-30">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-slate-200">👁️ Live Preview Space</span>
-              <span className="text-xs text-slate-400 font-mono hidden sm:inline">({formData.experiments?.length || 1} Experiment{(formData.experiments?.length || 1) > 1 ? 's' : ''})</span>
+          {/* Floating Studio Controls Header */}
+          <div className="flex flex-wrap items-center justify-between gap-3 w-full max-w-[440mm] mb-5 bg-slate-950/80 p-2.5 px-4 rounded-2xl border border-white/[0.08] backdrop-blur-xl shrink-0 shadow-2xl shadow-black/50 sticky top-2 z-30">
+            <div className="flex items-center gap-2.5">
+              <div className="p-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                <Eye className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-bold text-white tracking-tight">Live A4 Paper Canvas</span>
+                <span className="ml-2 text-[10px] font-mono text-slate-400">
+                  ({formData.experiments?.length || 1} Exp{(formData.experiments?.length || 1) > 1 ? 's' : ''})
+                </span>
+              </div>
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={handleAddExperiment}
-                className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/30 transition-all flex items-center gap-1.5 active:scale-95"
-                title="Add a new experiment at the end of the last experiment"
+                className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600/90 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/40 border border-emerald-400/30 transition-all duration-150 flex items-center gap-1.5 active:scale-[0.97]"
+                title="Add a new experiment at the end"
               >
-                <span>➕</span>
-                <span>Add New Experiment</span>
+                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span className="hidden sm:inline">Add Experiment</span>
               </button>
 
               {/* 2-Page Single Row vs Single Page Toggle */}
-              <div className="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800">
+              <div className="flex items-center bg-slate-900/90 p-1 rounded-xl border border-white/[0.08]">
                 <button
                   onClick={() => setViewLayout('double')}
-                  className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-150 flex items-center gap-1 ${
                     viewLayout === 'double'
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-indigo-600 text-white shadow-sm'
+                      : 'text-slate-400 hover:text-white'
                   }`}
-                  title="View 2 Pages Side-by-Side in a Single Row"
+                  title="View 2 Pages Side-by-Side (Book Mode)"
                 >
-                  📖 2 Pages
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">2 Pages</span>
                 </button>
                 <button
                   onClick={() => setViewLayout('single')}
-                  className={`px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all duration-150 flex items-center gap-1 ${
                     viewLayout === 'single'
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-indigo-600 text-white shadow-sm'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                   title="View 1 Page Stacked Column"
                 >
-                  📜 1 Page
+                  <Scroll className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">1 Page</span>
                 </button>
               </div>
 
               {/* Zoom Controls Bar */}
-              <div className="flex items-center gap-1 bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">
+              <div className="flex items-center gap-1 bg-slate-900/90 px-1.5 py-1 rounded-xl border border-white/[0.08]">
                 <button
                   onClick={handleZoomOut}
                   disabled={zoomLevel <= 30}
-                  className="text-slate-300 hover:text-white disabled:opacity-30 px-2 py-0.5 text-xs font-bold rounded hover:bg-slate-800 transition-colors"
+                  className="text-slate-400 hover:text-white disabled:opacity-30 p-1 rounded-lg hover:bg-slate-800 transition-colors"
                   title="Zoom Out (-10%)"
                 >
-                  🔍 –
+                  <ZoomOut className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={handleZoomReset}
-                  className="text-xs font-mono font-bold text-blue-400 px-2 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20 transition-colors"
+                  className="text-[11px] font-mono font-bold text-indigo-300 px-2 py-0.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 transition-colors"
                   title="Reset Zoom to 85%"
                 >
                   {zoomLevel}%
@@ -689,18 +714,20 @@ export default function App() {
                 <button
                   onClick={handleZoomIn}
                   disabled={zoomLevel >= 160}
-                  className="text-slate-300 hover:text-white disabled:opacity-30 px-2 py-0.5 text-xs font-bold rounded hover:bg-slate-800 transition-colors"
+                  className="text-slate-400 hover:text-white disabled:opacity-30 p-1 rounded-lg hover:bg-slate-800 transition-colors"
+                  title="Zoom In (+10%)"
                 >
-                  🔍 +
+                  <ZoomIn className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               <button
                 onClick={handleDownloadPdf}
                 disabled={isExporting}
-                className="btn-primary px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all active:scale-95 disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-md shadow-indigo-600/25 border border-indigo-400/30 transition-all duration-150 active:scale-[0.97] disabled:opacity-50"
               >
-                {isExporting ? 'Exporting...' : 'Export PDF'}
+                {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5 stroke-[2.5]" />}
+                <span>{isExporting ? 'Exporting...' : 'Export PDF'}</span>
               </button>
             </div>
           </div>
