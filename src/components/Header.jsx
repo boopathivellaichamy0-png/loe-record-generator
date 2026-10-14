@@ -1,14 +1,12 @@
 import React from 'react';
-import { Plus, Sparkles, Trash2, Download, Layers, Columns2, Loader2 } from 'lucide-react';
+import { Plus, Sparkles, Trash2, Download, Layers, Loader2 } from 'lucide-react';
 
 export default function Header({
   onDownloadPdf,
   isExporting,
   onFillSample,
   onClearAll,
-  onAddExperiment,
-  showSamplePdfCompare,
-  onToggleSamplePdfCompare
+  onAddExperiment
 }) {
   return (
     <header className="bg-slate-950/85 backdrop-blur-xl border-b border-white/[0.08] px-4 py-2.5 flex items-center justify-between z-30 shrink-0 sticky top-0 shadow-lg shadow-black/40">
@@ -38,22 +36,6 @@ export default function Header({
 
       {/* Action Toolbar */}
       <div className="flex items-center gap-2">
-        
-        {/* Toggle Target Sample PDF Comparison */}
-        {onToggleSamplePdfCompare && (
-          <button
-            onClick={onToggleSamplePdfCompare}
-            className={`hidden md:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border transition-all duration-150 active:scale-[0.97] ${
-              showSamplePdfCompare
-                ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm shadow-amber-500/20'
-                : 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 border-white/[0.08]'
-            }`}
-            title="Toggle side-by-side comparison with original sample PDF"
-          >
-            <Columns2 className="w-3.5 h-3.5 text-amber-400" />
-            <span>{showSamplePdfCompare ? 'Hide Target PDF' : 'Compare Target PDF'}</span>
-          </button>
-        )}
 
         <button
           onClick={onAddExperiment}
