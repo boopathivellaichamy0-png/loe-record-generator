@@ -5,6 +5,8 @@ import FormEditor from './components/FormEditor';
 import PdfDocument from './components/PdfDocument';
 import { exportToPdf } from './utils/pdfExporter';
 import { 
+  FileText,
+  Sliders,
   Plus, 
   Eye, 
   BookOpen, 
