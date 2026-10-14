@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import FormEditor from './components/FormEditor';
 import PdfDocument from './components/PdfDocument';
+import SamplePdfViewer from './components/SamplePdfViewer';
 import { exportToPdf } from './utils/pdfExporter';
 import { 
   FileText, 
@@ -15,7 +16,8 @@ import {
   ZoomOut, 
   RotateCcw, 
   Download, 
-  Loader2 
+  Loader2,
+  Columns2
 } from 'lucide-react';
 
 // Factory for creating a brand new experiment
@@ -417,6 +419,9 @@ export default function App() {
   const [leftPanelWidth, setLeftPanelWidth] = useState(32);
   const [isResizing, setIsResizing] = useState(false);
 
+  // Side-by-Side Sample PDF Comparison state
+  const [showSamplePdfCompare, setShowSamplePdfCompare] = useState(true);
+
   const startResizing = (e) => {
     e.preventDefault();
     setIsResizing(true);
@@ -550,6 +555,8 @@ export default function App() {
         onFillSample={handleFillSample}
         onClearAll={handleClearAll}
         onAddExperiment={handleAddExperiment}
+        showSamplePdfCompare={showSamplePdfCompare}
+        onToggleSamplePdfCompare={() => setShowSamplePdfCompare((prev) => !prev)}
       />
 
       {/* Main Workspace Split-Screen Container */}
@@ -657,6 +664,21 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-2">
+              
+              {/* Toggle Target Sample PDF Comparison */}
+              <button
+                onClick={() => setShowSamplePdfCompare((prev) => !prev)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 active:scale-[0.97] ${
+                  showSamplePdfCompare
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm shadow-amber-500/10'
+                    : 'bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-white/[0.08]'
+                }`}
+                title="Toggle Side-by-Side Reference PDF comparison to check alignment, font sizes and spacing"
+              >
+                <Columns2 className="w-3.5 h-3.5 text-amber-400" />
+                <span>{showSamplePdfCompare ? 'Hide Target PDF' : 'Compare Target PDF'}</span>
+              </button>
+
               <button
                 onClick={handleAddExperiment}
                 className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600/90 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/40 border border-emerald-400/30 transition-all duration-150 flex items-center gap-1.5 active:scale-[0.97]"
@@ -732,18 +754,63 @@ export default function App() {
             </div>
           </div>
 
-          {/* Dynamic Scaled Live Document Preview Canvas */}
-          <div className="w-full flex justify-center overflow-x-auto py-2">
-            <div
-              className="preview-scaler transition-transform duration-200 origin-top flex flex-col items-center shrink-0"
-              style={{
-                transform: `scale(${zoomLevel / 100})`,
-                transformOrigin: 'top center'
-              }}
-            >
-              <PdfDocument data={formData} onUpdateData={handleUpdateGlobal} viewLayout={viewLayout} />
+          {/* Dynamic Scaled Live Document Preview Canvas with Side-by-Side Reference */}
+          {showSamplePdfCompare ? (
+            <div className="w-full flex-1 flex flex-col 2xl:flex-row gap-6 items-stretch justify-center py-2 max-w-[500mm]">
+              
+              {/* Left Column: Live Generated Preview */}
+              <div className="flex-1 flex flex-col items-center bg-slate-950/40 p-3 sm:p-5 rounded-2xl border border-white/[0.06] shadow-xl overflow-x-auto min-w-0">
+                <div className="w-full flex items-center justify-between pb-3 mb-4 border-b border-white/[0.06]">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-bold text-white tracking-wide uppercase">
+                      Live Generated Record (Your Output)
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] text-slate-400 font-mono bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06]">
+                      Scale: {zoomLevel}%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="w-full flex justify-center overflow-x-auto">
+                  <div
+                    className="preview-scaler transition-transform duration-200 origin-top flex flex-col items-center shrink-0"
+                    style={{
+                      transform: `scale(${zoomLevel / 100})`,
+                      transformOrigin: 'top center'
+                    }}
+                  >
+                    <PdfDocument data={formData} onUpdateData={handleUpdateGlobal} viewLayout={viewLayout} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Target Reference PDF Viewer */}
+              <div className="flex-1 flex flex-col min-w-0 min-h-[750px] 2xl:min-h-0">
+                <div className="w-full h-full min-h-[750px] 2xl:sticky 2xl:top-20">
+                  <SamplePdfViewer 
+                    onClose={() => setShowSamplePdfCompare(false)} 
+                    activeExpNo={formData.experiments?.[formData.activeExpIndex || 0]?.expNo || '6'}
+                  />
+                </div>
+              </div>
+
             </div>
-          </div>
+          ) : (
+            <div className="w-full flex justify-center overflow-x-auto py-2">
+              <div
+                className="preview-scaler transition-transform duration-200 origin-top flex flex-col items-center shrink-0"
+                style={{
+                  transform: `scale(${zoomLevel / 100})`,
+                  transformOrigin: 'top center'
+                }}
+              >
+                <PdfDocument data={formData} onUpdateData={handleUpdateGlobal} viewLayout={viewLayout} />
+              </div>
+            </div>
+          )}
         </div>
 
       </div>
