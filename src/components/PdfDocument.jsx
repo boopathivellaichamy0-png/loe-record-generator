@@ -5,9 +5,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
     studentName = 'ASHWANT S',
     registerNo = '714025247009',
     fontFamily = 'Times New Roman',
-    bodyFontSize = 11.5,
-    codeFontSize = 11,
-    titleFontSize = 12.5,
+    bodyFontSize = 15,
+    codeFontSize = 15,
+    titleFontSize = 16.5,
     imageMaxHeight = 220,
     imageMaxWidth = 96,
     imageAlignment = 'center',
@@ -60,6 +60,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
   // Continuation Page Code Capacity: 35 lines
   const page1MaxCodeCapacity = 28;
   const continuationMaxCodeLines = 35;
+  const maxOutputLinesPerPage = 45;
 
   return (
     <div className="relative w-full flex justify-center">
@@ -265,25 +266,29 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
             codeChunks.push('');
           }
 
-          // Output Screenshots chunking:
-          // Output Page 1 (Even) gets screenshot 1 / console output text.
-          // Output Page 2 (Even) gets screenshot 2 (if any) or blank leaf.
+          // Output chunking (Max 45 lines per output page):
+          // First page gets OUTPUT: heading and lines 1..45
+          // Continuation output pages get lines 46..90, etc. with no output heading
+          const allOutputLines = outputText ? outputText.split('\n') : [];
+          const outputTextChunks = [];
+          if (allOutputLines.length > 0) {
+            let lineIdx = 0;
+            while (lineIdx < allOutputLines.length) {
+              outputTextChunks.push(allOutputLines.slice(lineIdx, lineIdx + maxOutputLinesPerPage).join('\n'));
+              lineIdx += maxOutputLinesPerPage;
+            }
+          }
+
           const currentImagesList = outputImages || [];
           const outputPagesList = [];
+          const totalOutputPagesNeeded = Math.max(outputTextChunks.length, currentImagesList.length, 2);
 
-          if (currentImagesList.length === 0) {
-            // Screenshot 1 is console output text or empty
-            outputPagesList.push({ text: outputText || '', images: [] });
-            // Output page 2 is clean blank leaf
-            outputPagesList.push({ text: '', images: [] });
-          } else {
-            // Distribute images across output pages (1 per output page or stacked if multiple)
-            outputPagesList.push({ text: outputText || '', images: [currentImagesList[0]] });
-            if (currentImagesList.length > 1) {
-              outputPagesList.push({ text: '', images: currentImagesList.slice(1) });
-            } else {
-              outputPagesList.push({ text: '', images: [] });
-            }
+          for (let i = 0; i < totalOutputPagesNeeded; i++) {
+            outputPagesList.push({
+              text: outputTextChunks[i] !== undefined ? outputTextChunks[i] : '',
+              images: currentImagesList[i] !== undefined ? [currentImagesList[i]] : [],
+              isFirstOutputPage: i === 0
+            });
           }
 
           // Total Page Pairs: Every experiment has AT LEAST 2 pairs (4 pages = 2 written odd pages, 2 output even pages)
@@ -456,7 +461,9 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                               {/* Optional Console Output Text Header */}
                               {currentOutputChunk && (
                                 <>
-                                  <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>OUTPUT:</div>
+                                  {outputPageData?.isFirstOutputPage && (
+                                    <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>OUTPUT:</div>
+                                  )}
                                   <pre className="doc-output-text" style={{ fontSize: `${codeFontSize}px`, fontFamily: currentFontFamily }}>{currentOutputChunk}</pre>
                                 </>
                               )}

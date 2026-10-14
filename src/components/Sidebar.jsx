@@ -2,13 +2,10 @@ import React from 'react';
 import { 
   Type, 
   Stamp, 
-  Sliders, 
   Sparkles, 
   Eraser, 
-  CaseSensitive,
-  Code2,
-  Heading,
-  Check
+  Check,
+  Sliders
 } from 'lucide-react';
 
 export default function Sidebar({ data, setData, formData, onUpdate, onFillSample, onClearAll, onShowToast }) {
@@ -40,9 +37,6 @@ export default function Sidebar({ data, setData, formData, onUpdate, onFillSampl
     { name: 'Courier New', label: 'Courier New (Typewriter)', style: { fontFamily: 'Courier New, monospace' } }
   ];
 
-  const bodyFontSize = currentData.bodyFontSize !== undefined ? currentData.bodyFontSize : 20;
-  const codeFontSize = currentData.codeFontSize !== undefined ? currentData.codeFontSize : 20;
-  const titleFontSize = currentData.titleFontSize !== undefined ? currentData.titleFontSize : 20;
   const activeFont = currentData.fontFamily || 'Times New Roman';
 
   return (
@@ -57,10 +51,10 @@ export default function Sidebar({ data, setData, formData, onUpdate, onFillSampl
             </div>
             <div>
               <h2 className="text-sm font-bold text-white tracking-tight">
-                Document Typography & Styling
+                Document Typography & Preferences
               </h2>
               <p className="text-[11px] text-slate-400">
-                Fine-tune print layout fonts, size metrics, and watermark
+                Font sizes locked to exact academic standards (15px body, 15px code, 16.5px headings)
               </p>
             </div>
           </div>
@@ -101,132 +95,7 @@ export default function Sidebar({ data, setData, formData, onUpdate, onFillSampl
           </div>
         </div>
 
-        {/* Section 2: Precise Font Size Controls */}
-        <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl p-4 border border-white/[0.06] space-y-4 shadow-lg shadow-black/20">
-          <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-            <h3 className="text-xs font-bold text-slate-200 tracking-wide flex items-center gap-1.5">
-              <CaseSensitive className="w-4 h-4 text-blue-400" />
-              <span>Optical Font Scale Controls</span>
-            </h3>
-            <span className="text-[10px] text-slate-400">Default Target: 20px</span>
-          </div>
-
-          {/* 1. Body Text Size */}
-          <div className="space-y-2 bg-slate-950/70 p-3 rounded-xl border border-white/[0.04]">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-200 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                Body Text (Aim, Algorithm, Result)
-              </span>
-              <span className="font-mono text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
-                {bodyFontSize}px
-              </span>
-            </div>
-            <div className="flex items-center gap-3 pt-1">
-              <input
-                type="range"
-                min="8"
-                max="28"
-                step="0.5"
-                value={bodyFontSize}
-                onChange={(e) => handleUpdate('bodyFontSize', parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
-              />
-              <div className="flex items-center gap-1 shrink-0">
-                <button
-                  onClick={() => handleUpdate('bodyFontSize', Math.max(8, bodyFontSize - 0.5))}
-                  className="w-7 h-7 flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-lg border border-white/[0.08] text-xs font-bold transition-all active:scale-95"
-                >
-                  -
-                </button>
-                <button
-                  onClick={() => handleUpdate('bodyFontSize', Math.min(28, bodyFontSize + 0.5))}
-                  className="w-7 h-7 flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-lg border border-white/[0.08] text-xs font-bold transition-all active:scale-95"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* 2. Code & Console Output Size */}
-          <div className="space-y-2 bg-slate-950/70 p-3 rounded-xl border border-white/[0.04]">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-200 flex items-center gap-1.5">
-                <Code2 className="w-3.5 h-3.5 text-indigo-400" />
-                Commands & Code Lines
-              </span>
-              <span className="font-mono text-indigo-400 font-bold bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
-                {codeFontSize}px
-              </span>
-            </div>
-            <div className="flex items-center gap-3 pt-1">
-              <input
-                type="range"
-                min="7"
-                max="28"
-                step="0.5"
-                value={codeFontSize}
-                onChange={(e) => handleUpdate('codeFontSize', parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
-              />
-              <div className="flex items-center gap-1 shrink-0">
-                <button
-                  onClick={() => handleUpdate('codeFontSize', Math.max(7, codeFontSize - 0.5))}
-                  className="w-7 h-7 flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-lg border border-white/[0.08] text-xs font-bold transition-all active:scale-95"
-                >
-                  -
-                </button>
-                <button
-                  onClick={() => handleUpdate('codeFontSize', Math.min(28, codeFontSize + 0.5))}
-                  className="w-7 h-7 flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-lg border border-white/[0.08] text-xs font-bold transition-all active:scale-95"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* 3. Section Titles Size */}
-          <div className="space-y-2 bg-slate-950/70 p-3 rounded-xl border border-white/[0.04]">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-200 flex items-center gap-1.5">
-                <Heading className="w-3.5 h-3.5 text-purple-400" />
-                Section Headings (AIM, ALGORITHM, COMMANDS)
-              </span>
-              <span className="font-mono text-purple-400 font-bold bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
-                {titleFontSize}px
-              </span>
-            </div>
-            <div className="flex items-center gap-3 pt-1">
-              <input
-                type="range"
-                min="10"
-                max="32"
-                step="0.5"
-                value={titleFontSize}
-                onChange={(e) => handleUpdate('titleFontSize', parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500"
-              />
-              <div className="flex items-center gap-1 shrink-0">
-                <button
-                  onClick={() => handleUpdate('titleFontSize', Math.max(10, titleFontSize - 0.5))}
-                  className="w-7 h-7 flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-lg border border-white/[0.08] text-xs font-bold transition-all active:scale-95"
-                >
-                  -
-                </button>
-                <button
-                  onClick={() => handleUpdate('titleFontSize', Math.min(32, titleFontSize + 0.5))}
-                  className="w-7 h-7 flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white rounded-lg border border-white/[0.08] text-xs font-bold transition-all active:scale-95"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Section 3: Watermark Text */}
+        {/* Section 2: Watermark Text */}
         <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl p-4 border border-white/[0.06] space-y-3 shadow-lg shadow-black/20">
           <h3 className="text-xs font-bold text-slate-200 tracking-wide flex items-center gap-1.5">
             <Stamp className="w-4 h-4 text-cyan-400" />

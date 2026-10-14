@@ -348,8 +348,8 @@ html, body {
 }
 
 .exp-header-no {
-  font-weight: bold;
-  font-size: 13px;
+  font-weight: 800;
+  font-size: 15.5px;
   height: 44px;
   min-height: 44px;
   padding: 0 14px;
@@ -361,8 +361,8 @@ html, body {
 }
 
 .exp-header-date {
-  font-weight: bold;
-  font-size: 13px;
+  font-weight: 800;
+  font-size: 15.5px;
   height: 60px;
   min-height: 60px;
   padding: 10px 14px;
@@ -375,8 +375,8 @@ html, body {
 .exp-header-title {
   width: 78%;
   text-align: center;
-  font-weight: bold;
-  font-size: 14.5px;
+  font-weight: 900;
+  font-size: 17.5px;
   height: 104px;
   min-height: 104px;
   padding: 16px 22px !important;
@@ -385,6 +385,7 @@ html, body {
   word-wrap: break-word;
   color: #000000;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Document Sections */
