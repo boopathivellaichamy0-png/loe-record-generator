@@ -1,40 +1,308 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' }) {
+// DIRECT INTERACTIVE DRAG-TO-MOVE AND DRAG-TO-RESIZE IMAGE COMPONENT
+function DraggableOutputImage({
+  imgUrl,
+  expIdx,
+  pagePairIdx = 0,
+  initialX = 80,
+  initialY = 120,
+  initialWidth = 540,
+  initialHeight = 340,
+  onUpdateTransform
+}) {
+  const [transform, setTransform] = useState({
+    x: initialX,
+    y: initialY,
+    width: initialWidth,
+    height: initialHeight
+  });
+  const [isInteracting, setIsInteracting] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isInteracting) {
+      setTransform({
+        x: initialX,
+        y: initialY,
+        width: initialWidth,
+        height: initialHeight
+      });
+    }
+  }, [initialX, initialY, initialWidth, initialHeight, isInteracting]);
+
+  const getZoomScale = (target) => {
+    const scaler = target.closest('.preview-scaler');
+    if (!scaler) return 1;
+    const rect = scaler.getBoundingClientRect();
+    return rect.width > 0 && scaler.offsetWidth > 0 ? rect.width / scaler.offsetWidth : 1;
+  };
+
+  const handleMoveMouseDown = (e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const scale = getZoomScale(e.currentTarget);
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const originX = transform.x;
+    const originY = transform.y;
+    const originW = transform.width;
+    const originH = transform.height;
+
+    setIsInteracting(true);
+    setIsFocused(true);
+    document.body.style.cursor = 'grabbing';
+    document.body.style.userSelect = 'none';
+
+    let currentX = originX;
+    let currentY = originY;
+
+    const handleMouseMove = (moveEvent) => {
+      const deltaX = (moveEvent.clientX - startX) / scale;
+      const deltaY = (moveEvent.clientY - startY) / scale;
+      currentX = Math.round(originX + deltaX);
+      currentY = Math.round(originY + deltaY);
+      setTransform((prev) => ({
+        ...prev,
+        x: currentX,
+        y: currentY
+      }));
+    };
+
+    const handleMouseUp = () => {
+      setIsInteracting(false);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      if (onUpdateTransform) {
+        onUpdateTransform(expIdx, {
+          x: currentX,
+          y: currentY,
+          width: originW,
+          height: originH
+        }, pagePairIdx);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleResizeMouseDown = (e, direction) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const scale = getZoomScale(e.currentTarget);
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const originX = transform.x;
+    const originY = transform.y;
+    const originW = transform.width;
+    const originH = transform.height;
+
+    setIsInteracting(true);
+    setIsFocused(true);
+    document.body.style.userSelect = 'none';
+
+    let currentTransform = { ...transform };
+
+    const handleMouseMove = (moveEvent) => {
+      const deltaX = (moveEvent.clientX - startX) / scale;
+      const deltaY = (moveEvent.clientY - startY) / scale;
+
+      let newX = originX;
+      let newY = originY;
+      let newW = originW;
+      let newH = originH;
+
+      if (direction.includes('e')) {
+        newW = Math.max(60, Math.round(originW + deltaX));
+      }
+      if (direction.includes('s')) {
+        newH = Math.max(40, Math.round(originH + deltaY));
+      }
+      if (direction.includes('w')) {
+        const potentialW = Math.max(60, Math.round(originW - deltaX));
+        newX = Math.round(originX + (originW - potentialW));
+        newW = potentialW;
+      }
+      if (direction.includes('n')) {
+        const potentialH = Math.max(40, Math.round(originH - deltaY));
+        newY = Math.round(originY + (originH - potentialH));
+        newH = potentialH;
+      }
+
+      currentTransform = { x: newX, y: newY, width: newW, height: newH };
+      setTransform(currentTransform);
+    };
+
+    const handleMouseUp = () => {
+      setIsInteracting(false);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      if (onUpdateTransform) {
+        onUpdateTransform(expIdx, currentTransform, pagePairIdx);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleReset = (e) => {
+    e.stopPropagation();
+    const defaultPos = { x: 80, y: 120, width: 540, height: 340 };
+    setTransform(defaultPos);
+    if (onUpdateTransform) {
+      onUpdateTransform(expIdx, defaultPos, pagePairIdx);
+    }
+  };
+
+  const showControls = isHovered || isInteracting || isFocused;
+
+  return (
+    <div
+      className={`draggable-image-container absolute z-[1] select-none pointer-events-auto transition-[box-shadow,border-color] ${
+        showControls
+          ? 'border-2 border-blue-500 ring-2 ring-blue-500/80 shadow-2xl no-print-border'
+          : 'border-2 border-transparent'
+      }`}
+      style={{
+        left: `${transform.x}px`,
+        top: `${transform.y}px`,
+        width: `${transform.width}px`,
+        height: `${transform.height}px`,
+        cursor: isInteracting ? 'grabbing' : 'grab'
+      }}
+      tabIndex={0}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => !isInteracting && setIsFocused(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => !isInteracting && setIsHovered(false)}
+      onMouseDown={handleMoveMouseDown}
+    >
+      <img
+        src={imgUrl}
+        alt="Terminal Screenshot"
+        className="w-full h-full object-contain pointer-events-none rounded select-none"
+        draggable={false}
+      />
+
+      {/* Floating Info Pill on Top (only shown on hover/interaction, stripped in print/pdf) */}
+      <div
+        className={`absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white text-[11px] font-semibold px-3 py-1 rounded-full shadow-lg border border-slate-700/80 flex items-center gap-2.5 transition-opacity no-print pointer-events-auto select-none whitespace-nowrap z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <span className="flex items-center gap-1.5 text-slate-200">
+          <span className="text-blue-400 font-bold">✥</span> Drag image to move • Handles to resize
+        </span>
+        <button
+          type="button"
+          onClick={handleReset}
+          className="text-amber-400 hover:text-amber-300 font-bold hover:underline cursor-pointer ml-1 text-[10px] bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20"
+          title="Reset image position and size"
+        >
+          Reset
+        </button>
+      </div>
+
+      {/* 4 Corner Resize Handles */}
+      <div
+        onMouseDown={(e) => handleResizeMouseDown(e, 'nw')}
+        className={`absolute -top-2 -left-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full shadow cursor-nwse-resize no-print hover:scale-125 transition-transform z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        title="Resize (NW)"
+      />
+      <div
+        onMouseDown={(e) => handleResizeMouseDown(e, 'ne')}
+        className={`absolute -top-2 -right-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full shadow cursor-nesw-resize no-print hover:scale-125 transition-transform z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        title="Resize (NE)"
+      />
+      <div
+        onMouseDown={(e) => handleResizeMouseDown(e, 'sw')}
+        className={`absolute -bottom-2 -left-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full shadow cursor-nesw-resize no-print hover:scale-125 transition-transform z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        title="Resize (SW)"
+      />
+      <div
+        onMouseDown={(e) => handleResizeMouseDown(e, 'se')}
+        className={`absolute -bottom-2 -right-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full shadow cursor-nwse-resize no-print hover:scale-125 transition-transform z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        title="Resize (SE)"
+      />
+
+      {/* 4 Edge Handles */}
+      <div
+        onMouseDown={(e) => handleResizeMouseDown(e, 'n')}
+        className={`absolute -top-1.5 left-1/2 -translate-x-1/2 w-6 h-2.5 bg-blue-600 border border-white rounded shadow cursor-ns-resize no-print hover:bg-blue-500 z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        title="Resize Height (Top)"
+      />
+      <div
+        onMouseDown={(e) => handleResizeMouseDown(e, 's')}
+        className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-6 h-2.5 bg-blue-600 border border-white rounded shadow cursor-ns-resize no-print hover:bg-blue-500 z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        title="Resize Height (Bottom)"
+      />
+      <div
+        onMouseDown={(e) => handleResizeMouseDown(e, 'w')}
+        className={`absolute top-1/2 -left-1.5 -translate-y-1/2 w-2.5 h-6 bg-blue-600 border border-white rounded shadow cursor-ew-resize no-print hover:bg-blue-500 z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        title="Resize Width (Left)"
+      />
+      <div
+        onMouseDown={(e) => handleResizeMouseDown(e, 'e')}
+        className={`absolute top-1/2 -right-1.5 -translate-y-1/2 w-2.5 h-6 bg-blue-600 border border-white rounded shadow cursor-ew-resize no-print hover:bg-blue-500 z-30 ${
+          showControls ? 'opacity-90 hover:opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        title="Resize Width (Right)"
+      />
+    </div>
+  );
+}
+
+export default function PdfDocument({ 
+  data, 
+  onUpdateData, 
+  onUpdateImageTransform,
+  viewLayout = 'double' 
+}) {
   const {
-    studentName = 'ASHWANT S',
-    registerNo = '714025247009',
+    studentName = '',
+    registerNo = '',
     fontFamily = 'Times New Roman',
     bodyFontSize = 15,
     codeFontSize = 15,
     titleFontSize = 16.5,
-    imageMaxHeight = 220,
-    imageMaxWidth = 96,
-    imageAlignment = 'center',
-    imageMarginTop = 0,
-    imageOffsetX = 0,
-    imageOffsetY = 0,
     watermarkText = '',
     experiments = []
   } = data || {};
 
-  const [showImageAdjuster, setShowImageAdjuster] = useState(false);
-
   const currentFontFamily = fontFamily || 'Times New Roman, serif';
-
-  const handleFieldChange = (field, value) => {
-    if (onUpdateData) {
-      onUpdateData(field, value);
-    }
-  };
 
   // Convert to array of experiments (backward compatible)
   const experimentList = (experiments && experiments.length > 0)
     ? experiments
     : [{
-        expNo: data?.expNo || '6',
+        expNo: data?.expNo || '1',
         date: data?.date || '',
-        title: data?.title || 'BASH SCRIPT USING BASH VARIABLE',
+        title: data?.title || '',
         aim: data?.aim || '',
         algorithm: data?.algorithm || '',
         code: data?.code || '',
@@ -46,15 +314,6 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
         result: data?.result || ''
       }];
 
-  const getAlignItems = (align) => {
-    if (align === 'left') return 'flex-start';
-    if (align === 'right') return 'flex-end';
-    return 'center';
-  };
-
-  const activeOffsetY = imageOffsetY !== undefined ? imageOffsetY : (imageMarginTop || 0);
-  const activeOffsetX = imageOffsetX || 0;
-
   // EXACT TARGET PDF CODE CAPACITY RULES:
   // Page 1 Code Capacity: 28 lines (accommodates Header, AIM, ALGORITHM, and first 28 lines of code)
   // Continuation Page Code Capacity: 35 lines
@@ -64,148 +323,6 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
 
   return (
     <div className="relative w-full flex justify-center">
-      
-      {/* EXPANDED 4-DIRECTIONAL IMAGE ADJUSTER PANEL */}
-      {showImageAdjuster && (
-        <div className="fixed left-4 top-20 z-40 w-80 bg-slate-900/95 border border-slate-800 rounded-2xl p-4 shadow-2xl space-y-4 backdrop-blur-md transition-all animate-fadeIn">
-          
-          <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
-            <div className="flex items-center gap-2 text-slate-100 font-bold text-xs">
-              <span>🖼️ Image Move & Scale Controls</span>
-            </div>
-            <button
-              onClick={() => setShowImageAdjuster(false)}
-              className="text-slate-400 hover:text-white text-sm font-bold px-2 py-0.5 rounded hover:bg-slate-800"
-            >
-              ✕
-            </button>
-          </div>
-
-          <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-3">
-            <div className="text-[11px] font-semibold text-slate-200">Extended 4-Way Movement</div>
-            
-            <div className="space-y-1">
-              <div className="flex justify-between text-[10px] text-slate-400 font-medium">
-                <span>Up / Down Offset</span>
-                <span className="font-mono text-blue-400 font-bold">{activeOffsetY}px</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleFieldChange('imageOffsetY', Math.max(-150, activeOffsetY - 10))}
-                  className="px-2 py-1 bg-slate-800 text-slate-300 hover:text-white rounded border border-slate-700 text-xs font-bold shrink-0"
-                >
-                  ⬆️ Up
-                </button>
-                <input
-                  type="range"
-                  min="-150"
-                  max="250"
-                  step="5"
-                  value={activeOffsetY}
-                  onChange={(e) => handleFieldChange('imageOffsetY', parseInt(e.target.value, 10))}
-                  className="w-full accent-blue-500 cursor-pointer"
-                />
-                <button
-                  onClick={() => handleFieldChange('imageOffsetY', Math.min(250, activeOffsetY + 10))}
-                  className="px-2 py-1 bg-slate-800 text-slate-300 hover:text-white rounded border border-slate-700 text-xs font-bold shrink-0"
-                >
-                  ⬇️ Down
-                </button>
-              </div>
-            </div>
-
-            <div className="space-y-1 pt-2 border-t border-slate-800/60">
-              <div className="flex justify-between text-[10px] text-slate-400 font-medium">
-                <span>Left / Right Offset</span>
-                <span className="font-mono text-purple-400 font-bold">{activeOffsetX}px</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleFieldChange('imageOffsetX', Math.max(-250, activeOffsetX - 15))}
-                  className="px-2 py-1 bg-slate-800 text-slate-300 hover:text-white rounded border border-slate-700 text-xs font-bold shrink-0"
-                >
-                  ⬅️ Left
-                </button>
-                <input
-                  type="range"
-                  min="-250"
-                  max="250"
-                  step="5"
-                  value={activeOffsetX}
-                  onChange={(e) => handleFieldChange('imageOffsetX', parseInt(e.target.value, 10))}
-                  className="w-full accent-purple-500 cursor-pointer"
-                />
-                <button
-                  onClick={() => handleFieldChange('imageOffsetX', Math.min(250, activeOffsetX + 15))}
-                  className="px-2 py-1 bg-slate-800 text-slate-300 hover:text-white rounded border border-slate-700 text-xs font-bold shrink-0"
-                >
-                  ➡️ Right
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1.5">
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="font-semibold text-slate-200">Image Height (mm)</span>
-              <span className="font-mono text-emerald-400 font-bold bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
-                {imageMaxHeight}mm
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="range"
-                min="50"
-                max="260"
-                step="5"
-                value={imageMaxHeight}
-                onChange={(e) => handleFieldChange('imageMaxHeight', parseInt(e.target.value, 10))}
-                className="w-full accent-emerald-500 cursor-pointer"
-              />
-            </div>
-          </div>
-
-          <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1.5">
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="font-semibold text-slate-200">Image Width (%)</span>
-              <span className="font-mono text-cyan-400 font-bold bg-cyan-500/10 px-1.5 py-0.5 rounded border border-cyan-500/20">
-                {imageMaxWidth}%
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="range"
-                min="30"
-                max="100"
-                step="2"
-                value={imageMaxWidth}
-                onChange={(e) => handleFieldChange('imageMaxWidth', parseInt(e.target.value, 10))}
-                className="w-full accent-cyan-500 cursor-pointer"
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={() => {
-                handleFieldChange('imageOffsetX', 0);
-                handleFieldChange('imageOffsetY', 0);
-                handleFieldChange('imageMaxHeight', 220);
-                handleFieldChange('imageMaxWidth', 96);
-              }}
-              className="flex-1 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors"
-            >
-              Reset Position
-            </button>
-            <button
-              onClick={() => setShowImageAdjuster(false)}
-              className="flex-1 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-500 shadow-md shadow-blue-600/30 transition-all"
-            >
-              Close & Save
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* DOCUMENT PREVIEW CONTAINER FOR ALL EXPERIMENTS SEQUENTIALLY */}
       <div
@@ -240,7 +357,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
               })
             : [];
 
-          const displayResult = result || (title ? `Thus, using Linux commands, ${title.toLowerCase()} has been done successfully.` : '');
+          const displayResult = result || '';
 
           // Code chunking: Page 1 gets up to page1MaxCodeCapacity (28 lines).
           // Continuation written pages get continuationMaxCodeLines (35 lines).
@@ -340,7 +457,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                                     </div>
                                   </td>
                                   <td className="exp-header-title">
-                                    {title || `EXPERIMENT TITLE ${expIdx + 1}`}
+                                    {title || ''}
                                   </td>
                                 </tr>
                               </tbody>
@@ -444,7 +561,7 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                     <div className="a4-page" style={{ fontFamily: currentFontFamily }}>
                       <div className="a4-inner-border relative flex flex-col justify-between h-full overflow-hidden">
                         
-                        {/* Watermark */}
+                        {/* Watermark (if set) */}
                         {watermarkText && (
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 opacity-10">
                             <span className="text-5xl font-extrabold uppercase tracking-widest text-black transform -rotate-45">
@@ -453,61 +570,46 @@ export default function PdfDocument({ data, onUpdateData, viewLayout = 'double' 
                           </div>
                         )}
 
-                        {/* TOP SECTION EVEN PAGE: OUTPUT SCREENSHOT OR CONSOLE TEXT */}
-                        <div className="relative z-10 doc-top-content flex-1 flex flex-col overflow-hidden">
-                          <div className="doc-body-wrapper pt-3 flex-1 flex flex-col overflow-hidden">
-                            <div className="doc-section flex-1 flex flex-col overflow-hidden">
+                        {/* DRAGGABLE & RESIZABLE OUTPUT IMAGES (BEHIND TEXT, NOT CONSTRAINED BY LINES) */}
+                        {currentImages && currentImages.map((imgUrl, imgI) => (
+                          <DraggableOutputImage
+                            key={`${expIdx}-${pagePairIdx}-${imgI}`}
+                            imgUrl={imgUrl}
+                            expIdx={expIdx}
+                            pagePairIdx={pagePairIdx}
+                            initialX={expItem.imageTransforms?.[pagePairIdx]?.x ?? expItem.imageOffsetX ?? 80}
+                            initialY={expItem.imageTransforms?.[pagePairIdx]?.y ?? expItem.imageOffsetY ?? 120}
+                            initialWidth={expItem.imageTransforms?.[pagePairIdx]?.width ?? expItem.imageWidth ?? 540}
+                            initialHeight={expItem.imageTransforms?.[pagePairIdx]?.height ?? expItem.imageHeight ?? 340}
+                            onUpdateTransform={onUpdateImageTransform}
+                          />
+                        ))}
+
+                        {/* TOP SECTION EVEN PAGE: OUTPUT CONSOLE TEXT (RENDERED IN FRONT OF IMAGE) */}
+                        <div className="relative z-10 doc-top-content flex-1 flex flex-col overflow-hidden pointer-events-none bg-transparent">
+                          <div className="doc-body-wrapper pt-3 flex-1 flex flex-col overflow-hidden bg-transparent">
+                            <div className="doc-section flex-1 flex flex-col overflow-hidden bg-transparent">
                               
                               {/* Optional Console Output Text Header */}
                               {currentOutputChunk && (
-                                <>
+                                <div className="bg-transparent pointer-events-none">
                                   {outputPageData?.isFirstOutputPage && (
-                                    <div className="doc-section-title" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>OUTPUT:</div>
-                                  )}
-                                  <pre className="doc-output-text" style={{ fontSize: `${codeFontSize}px`, fontFamily: currentFontFamily }}>{currentOutputChunk}</pre>
-                                </>
-                              )}
-
-                              {/* Terminal Screenshot Image (Centered Vertically and Horizontally) */}
-                              {currentImages && currentImages.length > 0 && (
-                                <div
-                                  className="doc-output-image-container flex-1"
-                                  style={{
-                                    alignItems: getAlignItems(imageAlignment),
-                                    marginTop: `${activeOffsetY}px`,
-                                    transform: `translateX(${activeOffsetX}px)`
-                                  }}
-                                >
-                                  {currentImages.map((imgUrl, i) => (
-                                    <div
-                                      key={i}
-                                      onClick={() => setShowImageAdjuster(true)}
-                                      className="relative group cursor-pointer"
-                                      title="Click image to open positioning controls"
-                                    >
-                                      <img
-                                        src={imgUrl}
-                                        alt={`Terminal Screenshot ${i + 1}`}
-                                        className="doc-output-image transition-all hover:ring-2 hover:ring-blue-500 hover:shadow-lg"
-                                        style={{
-                                          maxHeight: `${imageMaxHeight || 220}mm`,
-                                          maxWidth: `${imageMaxWidth || 96}%`,
-                                          marginBottom: i < currentImages.length - 1 ? '12px' : '0'
-                                        }}
-                                      />
-                                      <div className="absolute top-2 right-2 bg-blue-600/90 text-white text-[10px] font-bold px-2 py-1 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity no-print">
-                                        ⚙️ Move Up/Down/Left/Right
-                                      </div>
+                                    <div className="doc-section-title bg-transparent" style={{ fontSize: `${titleFontSize}px`, fontFamily: currentFontFamily }}>
+                                      OUTPUT:
                                     </div>
-                                  ))}
+                                  )}
+                                  <pre className="doc-output-text bg-transparent" style={{ fontSize: `${codeFontSize}px`, fontFamily: currentFontFamily }}>
+                                    {currentOutputChunk}
+                                  </pre>
                                 </div>
                               )}
+
                             </div>
                           </div>
                         </div>
 
                         {/* BOTTOM SECTION EVEN PAGE: FOOTER */}
-                        <div className="relative z-10 doc-bottom-content">
+                        <div className="relative z-10 doc-bottom-content pointer-events-none bg-transparent">
                           <div className="doc-footer" style={{ fontFamily: currentFontFamily }}>
                             <span>{studentName}</span>
                             <span>{registerNo}</span>

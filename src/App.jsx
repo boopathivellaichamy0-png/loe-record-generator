@@ -18,11 +18,11 @@ import {
 } from 'lucide-react';
 
 // Factory for creating a brand new experiment
-export const createNewExperiment = (expNumber = 6) => ({
+export const createNewExperiment = (expNumber = 1) => ({
   id: `exp_${Date.now()}_${expNumber}`,
   expNo: String(expNumber),
   date: '',
-  title: `EXPERIMENT ${expNumber} TITLE`,
+  title: '',
   aim: '',
   algorithm: '',
   code: '',
@@ -38,6 +38,8 @@ export const createNewExperiment = (expNumber = 6) => ({
   },
   result: ''
 });
+
+export const SAMPLE_TERMINAL_IMAGE = `data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20640%20360%22%20width%3D%22640%22%20height%3D%22360%22%3E%0A%20%20%3Crect%20width%3D%22640%22%20height%3D%22360%22%20rx%3D%228%22%20fill%3D%22%231e1e1e%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2220%22%20cy%3D%2218%22%20r%3D%226%22%20fill%3D%22%23ff5f56%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2238%22%20cy%3D%2218%22%20r%3D%226%22%20fill%3D%22%23ffbd2e%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%2256%22%20cy%3D%2218%22%20r%3D%226%22%20fill%3D%22%2327c93f%22%2F%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%2260%22%20fill%3D%22%234ade80%22%20font-family%3D%22monospace%22%20font-size%3D%2214%22%20font-weight%3D%22bold%22%3Estudent%40linux%3A~%24%20.%2Femp.sh%3C%2Ftext%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%2290%22%20fill%3D%22%23e2e8f0%22%20font-family%3D%22monospace%22%20font-size%3D%2213%22%3EEnter%20employee%20name%3A%20ASHWANT%20S%3C%2Ftext%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%22120%22%20fill%3D%22%23e2e8f0%22%20font-family%3D%22monospace%22%20font-size%3D%2213%22%3EEmployee%20Basic%20Salary%3A%2025000%3C%2Ftext%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%22150%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22monospace%22%20font-size%3D%2213%22%3EEmployee%20name%20%3A%20ASHWANT%20S%3C%2Ftext%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%22175%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22monospace%22%20font-size%3D%2213%22%3EEmployee%20basic%20salary%20%3A%2025000%3C%2Ftext%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%22200%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22monospace%22%20font-size%3D%2213%22%3EDA%20%3A%202500%3C%2Ftext%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%22225%22%20fill%3D%22%2338bdf8%22%20font-family%3D%22monospace%22%20font-size%3D%2213%22%3EHRA%20%3A%205000%3C%2Ftext%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%22250%22%20fill%3D%22%234ade80%22%20font-family%3D%22monospace%22%20font-size%3D%2214%22%20font-weight%3D%22bold%22%3EGross%20salary%20%3A%2032500%3C%2Ftext%3E%0A%20%20%3Ctext%20x%3D%2224%22%20y%3D%22295%22%20fill%3D%22%2394a3b8%22%20font-family%3D%22monospace%22%20font-size%3D%2212%22%3Estudent%40linux%3A~%24%20%26%23x2588%3B%3C%2Ftext%3E%0A%3C%2Fsvg%3E`;
 
 // Full Sample Experiments Dataset Matching Target College Lab Record PDF Exactly
 export const TARGET_SAMPLE_EXPERIMENTS = [
@@ -76,7 +78,7 @@ export const TARGET_SAMPLE_EXPERIMENTS = [
 4. To run the shell:
    $ ./emp.sh`,
     outputText: ``,
-    outputImages: [],
+    outputImages: [SAMPLE_TERMINAL_IMAGE],
     showEvalTable: true,
     evalMarks: {
       programExecution: '',
@@ -385,31 +387,45 @@ export const TARGET_SAMPLE_EXPERIMENTS = [
 ];
 
 export const INITIAL_MULTI_EXPERIMENT_DATA = {
-  studentName: 'ASHWANT S',
-  registerNo: '714025247009',
+  studentName: '',
+  registerNo: '',
   fontFamily: 'Times New Roman',
   bodyFontSize: 15,
   codeFontSize: 15,
   titleFontSize: 16.5,
   imageMaxHeight: 220,
   imageMaxWidth: 96,
-  imageAlignment: 'center',
-  imageMarginTop: 0,
-  imageOffsetX: 0,
-  imageOffsetY: 0,
+  imageWidth: 540,
+  imageHeight: 340,
+  imageOffsetX: 80,
+  imageOffsetY: 120,
   watermarkText: '',
   activeExpIndex: 0,
-  experiments: TARGET_SAMPLE_EXPERIMENTS
+  experiments: [createNewExperiment(1)]
 };
 
 export default function App() {
   const [formData, setFormData] = useState(INITIAL_MULTI_EXPERIMENT_DATA);
   const [isExporting, setIsExporting] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(85);
+  const [zoomLevel, setZoomLevel] = useState(70);
   const [viewLayout, setViewLayout] = useState('double');
   
   // Sub-Tab inside Workspace Panel ("inputs" or "styling")
   const [editorSubTab, setEditorSubTab] = useState('inputs');
+
+  // Window Width & Mobile View Switcher
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  );
+  const [mobileView, setMobileView] = useState('preview');
+
+  React.useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isDesktop = windowWidth >= 768;
 
   // Adjustable Panel Split Ratio Width Percentage
   const [leftPanelWidth, setLeftPanelWidth] = useState(32);
@@ -440,6 +456,35 @@ export default function App() {
       ...prev,
       [field]: value
     }));
+  };
+
+  const handleUpdateImageTransform = (expIdx, transform, pagePairIdx = 0) => {
+    setFormData((prev) => {
+      const activeIdx = expIdx !== undefined ? expIdx : (prev.activeExpIndex || 0);
+      const updatedExps = [...(prev.experiments || [])];
+      if (updatedExps[activeIdx]) {
+        const existingTransforms = updatedExps[activeIdx].imageTransforms || {};
+        updatedExps[activeIdx] = {
+          ...updatedExps[activeIdx],
+          imageOffsetX: transform.x,
+          imageOffsetY: transform.y,
+          imageWidth: transform.width,
+          imageHeight: transform.height,
+          imageTransforms: {
+            ...existingTransforms,
+            [pagePairIdx]: transform
+          }
+        };
+      }
+      return {
+        ...prev,
+        experiments: updatedExps,
+        imageOffsetX: transform.x,
+        imageOffsetY: transform.y,
+        imageWidth: transform.width,
+        imageHeight: transform.height
+      };
+    });
   };
 
   // ADD NEW EXPERIMENT FEATURE
@@ -505,23 +550,32 @@ export default function App() {
 
   // FILL SAMPLE EXPERIMENT DATA - Restores Full Target Reference Dataset
   const handleFillSample = () => {
-    setFormData(INITIAL_MULTI_EXPERIMENT_DATA);
+    setFormData({
+      studentName: 'ASHWANT S',
+      registerNo: '714025247009',
+      fontFamily: 'Times New Roman',
+      bodyFontSize: 15,
+      codeFontSize: 15,
+      titleFontSize: 16.5,
+      imageMaxHeight: 220,
+      imageMaxWidth: 96,
+      imageWidth: 540,
+      imageHeight: 340,
+      imageOffsetX: 80,
+      imageOffsetY: 120,
+      watermarkText: '',
+      activeExpIndex: 0,
+      experiments: TARGET_SAMPLE_EXPERIMENTS
+    });
   };
 
   const handleClearAll = () => {
-    setFormData((prev) => ({
-      ...prev,
-      studentName: '',
-      registerNo: '',
-      watermarkText: '',
-      activeExpIndex: 0,
-      experiments: [createNewExperiment(6)]
-    }));
+    setFormData(INITIAL_MULTI_EXPERIMENT_DATA);
   };
 
   const handleZoomIn = () => setZoomLevel((prev) => Math.min(160, prev + 10));
   const handleZoomOut = () => setZoomLevel((prev) => Math.max(30, prev - 10));
-  const handleZoomReset = () => setZoomLevel(85);
+  const handleZoomReset = () => setZoomLevel(70);
 
   const handleDownloadPdf = async () => {
     if (isExporting) return;
@@ -550,16 +604,34 @@ export default function App() {
         onAddExperiment={handleAddExperiment}
       />
 
-      {/* Main Workspace Split-Screen Container */}
-      <div className="main-content flex flex-col md:flex-row flex-1 overflow-hidden relative w-full h-full">
-        
+      {/* Main Workspace Split-Screen Container - ALWAYS DISPLAYS PREVIEW & EDITOR SIDE-BY-SIDE */}
+      <div
+        className="main-content"
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flex: 1,
+          width: '100%',
+          height: 'calc(100vh - 64px)',
+          overflow: 'hidden',
+          position: 'relative'
+        }}
+      >
         {/* LEFT PANE: WORKSPACE & INPUT DETAILS EDITOR */}
         <div
-          className="h-1/2 md:h-full overflow-y-auto bg-slate-950 flex flex-col shrink-0 border-r border-white/[0.06]"
-          style={{ width: window.innerWidth >= 768 ? `${leftPanelWidth}%` : '100%' }}
+          className="left-editor-panel"
+          style={{
+            width: `${leftPanelWidth}%`,
+            minWidth: '340px',
+            maxWidth: '55%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'auto'
+          }}
         >
           {/* Sub-Nav Bar inside Left Editor Panel */}
-          <div className="w-full px-4 py-2.5 bg-slate-950/80 border-b border-white/[0.08] flex items-center justify-between sticky top-0 z-20 backdrop-blur-xl">
+          <div className="w-full px-4 py-2.5 bg-slate-950/80 border-b border-white/[0.08] flex items-center justify-between sticky top-0 z-20 backdrop-blur-xl shrink-0">
             <div className="flex items-center gap-2">
               <div className="flex items-center bg-slate-900/90 p-1 rounded-xl border border-white/[0.08] shadow-inner">
                 <button
@@ -626,22 +698,28 @@ export default function App() {
         {/* INTERACTIVE DRAGGABLE RESIZER HANDLE */}
         <div
           onMouseDown={startResizing}
-          className={`hidden md:flex w-2.5 h-full bg-slate-950 hover:bg-indigo-600/60 cursor-col-resize items-center justify-center shrink-0 border-x border-white/[0.06] transition-all z-20 group ${
-            isResizing ? 'bg-indigo-600 shadow-[0_0_15px_rgba(99,102,241,0.5)]' : ''
-          }`}
+          className={`panel-resizer ${isResizing ? 'is-resizing' : ''}`}
           title="Click and drag to adjust Workspace & Preview widths"
         >
-          <div className="w-0.5 h-8 bg-slate-700 group-hover:bg-white rounded-full transition-colors" />
+          <div className="w-0.5 h-8 bg-slate-700 hover:bg-white rounded-full transition-colors" />
         </div>
 
-        {/* RIGHT PANE: LIVE DOCUMENT PREVIEW CANVAS WITH MULTI-EXPERIMENT ADD BUTTON */}
+        {/* RIGHT PANE: LIVE DOCUMENT PREVIEW CANVAS (ALWAYS DISPLAYED SIDE-BY-SIDE) */}
         <div
-          className="flex-1 h-1/2 md:h-full overflow-x-auto overflow-y-auto preview-space-panel flex flex-col items-center p-3 sm:p-6 bg-[#06080d] bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px]"
-          style={{ width: window.innerWidth >= 768 ? `${100 - leftPanelWidth}%` : '100%' }}
+          className="preview-space-panel"
+          style={{
+            width: `${100 - leftPanelWidth}%`,
+            flex: 1,
+            minWidth: '400px',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            overflowX: 'auto',
+            overflowY: 'auto'
+          }}
         >
-          
           {/* Floating Studio Controls Header */}
-          <div className="flex flex-wrap items-center justify-between gap-3 w-full max-w-[440mm] mb-5 bg-slate-950/80 p-2.5 px-4 rounded-2xl border border-white/[0.08] backdrop-blur-xl shrink-0 shadow-2xl shadow-black/50 sticky top-2 z-30">
+          <div className="flex flex-wrap items-center justify-between gap-3 w-full max-w-[440mm] mb-3 bg-slate-950/80 p-2.5 px-4 rounded-2xl border border-white/[0.08] backdrop-blur-xl shrink-0 shadow-2xl shadow-black/50 sticky top-2 z-30">
             <div className="flex items-center gap-2.5">
               <div className="p-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
                 <Eye className="w-4 h-4" />
@@ -655,7 +733,6 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-2">
-
               <button
                 onClick={handleAddExperiment}
                 className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600/90 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/40 border border-emerald-400/30 transition-all duration-150 flex items-center gap-1.5 active:scale-[0.97]"
@@ -706,7 +783,7 @@ export default function App() {
                 <button
                   onClick={handleZoomReset}
                   className="text-[11px] font-mono font-bold text-indigo-300 px-2 py-0.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/20 transition-colors"
-                  title="Reset Zoom to 85%"
+                  title="Reset Zoom to 70%"
                 >
                   {zoomLevel}%
                 </button>
@@ -731,8 +808,8 @@ export default function App() {
             </div>
           </div>
 
-          {/* Dynamic Scaled Live Document Preview Canvas */}
-          <div className="w-full flex justify-center overflow-x-auto py-2">
+          {/* Dynamic Scaled Live Document Preview Canvas Wrapper */}
+          <div className="preview-canvas-wrapper">
             <div
               className="preview-scaler transition-transform duration-200 origin-top flex flex-col items-center shrink-0"
               style={{
@@ -740,7 +817,12 @@ export default function App() {
                 transformOrigin: 'top center'
               }}
             >
-              <PdfDocument data={formData} onUpdateData={handleUpdateGlobal} viewLayout={viewLayout} />
+              <PdfDocument 
+                data={formData} 
+                onUpdateData={handleUpdateGlobal} 
+                onUpdateImageTransform={handleUpdateImageTransform}
+                viewLayout={viewLayout} 
+              />
             </div>
           </div>
         </div>

@@ -55,6 +55,18 @@ export async function exportToPdf(elementId, filename = 'student_record.pdf') {
     clone.style.pageBreakAfter = 'avoid';
     clone.style.breakAfter = 'avoid';
 
+    // Strip interactive preview UI controls (drag handles, reset pill badges, etc.)
+    clone.querySelectorAll('.no-print').forEach((el) => el.remove());
+    clone.querySelectorAll('.draggable-image-container, .no-print-border, [class*="border-blue"], [class*="ring-blue"]').forEach((el) => {
+      el.style.border = 'none';
+      el.style.outline = 'none';
+      el.style.boxShadow = 'none';
+      el.className = el.className
+        .split(' ')
+        .filter((c) => !c.includes('border') && !c.includes('ring') && !c.includes('shadow'))
+        .join(' ');
+    });
+
     wrapper.appendChild(clone);
     document.body.appendChild(wrapper);
 

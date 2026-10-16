@@ -224,23 +224,71 @@ html, body {
 }
 
 .main-content {
-  display: flex;
-  flex: 1;
+  display: flex !important;
+  flex-direction: row !important;
+  flex: 1 1 0%;
+  width: 100%;
+  height: calc(100vh - 60px);
   overflow: hidden;
   position: relative;
 }
 
-/* Preview Space Panel */
+/* Left Editor Workspace Panel */
+.left-editor-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  flex-shrink: 0;
+  background-color: #020617;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+}
+
+/* Draggable Split Resizer */
+.panel-resizer {
+  display: flex;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background-color: #020617;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background-color 150ms;
+  z-index: 20;
+}
+.panel-resizer:hover, .panel-resizer.is-resizing {
+  background-color: rgba(99, 102, 241, 0.6);
+}
+
+/* Preview Space Panel (Always displayed on screen) */
 .preview-space-panel {
-  flex: 1;
+  flex: 1 1 0%;
   width: 100%;
+  height: 100%;
   background-color: #050811;
   background-image: radial-gradient(rgba(30, 41, 59, 0.6) 1px, transparent 1px);
   background-size: 18px 18px;
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
   align-items: center;
+  overflow-x: auto;
   overflow-y: auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.preview-canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 100%;
+  width: max-content;
+  padding: 12px 24px 48px 24px;
+  box-sizing: border-box;
 }
 
 .pdf-document-container {
@@ -632,6 +680,12 @@ html, body {
     padding: 0 !important;
     background: transparent !important;
     overflow: visible !important;
+  }
+  .draggable-image-container,
+  .no-print-border {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
   }
   .pdf-document-container {
     gap: 0 !important;

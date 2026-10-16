@@ -342,7 +342,7 @@ export default function FormEditor({
             <h2 className="text-xs font-bold text-white tracking-wide uppercase">
               Execution Output & Terminal Screenshots
             </h2>
-            <p className="text-[10px] text-slate-400">Positioned automatically on Page 2 (Even Page)</p>
+            <p className="text-[10px] text-slate-400">Positioned on Page 2 • Drag directly on paper canvas to move & resize behind text</p>
           </div>
         </div>
 
