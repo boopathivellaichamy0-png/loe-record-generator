@@ -316,9 +316,9 @@ export default function PdfDocument({
 
   // EXACT TARGET PDF CODE CAPACITY RULES:
   // Page 1 Code Capacity: 28 lines (accommodates Header, AIM, ALGORITHM, and first 28 lines of code)
-  // Continuation Page Code Capacity: 35 lines
+  // Continuation Page Code Capacity: 46 lines (increased by 11 lines from 35)
   const page1MaxCodeCapacity = 28;
-  const continuationMaxCodeLines = 35;
+  const continuationMaxCodeLines = 46;
   const maxOutputLinesPerPage = 45;
 
   return (
@@ -360,7 +360,7 @@ export default function PdfDocument({
           const displayResult = result || '';
 
           // Code chunking: Page 1 gets up to page1MaxCodeCapacity (28 lines).
-          // Continuation written pages get continuationMaxCodeLines (35 lines).
+          // Continuation written pages get continuationMaxCodeLines (46 lines).
           const allCodeLines = code ? code.split('\n') : [];
           const codeChunks = [];
 
