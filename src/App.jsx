@@ -18,9 +18,9 @@ import {
 } from 'lucide-react';
 
 // Factory for creating a brand new experiment
-export const createNewExperiment = (expNumber = 1) => ({
-  id: `exp_${Date.now()}_${expNumber}`,
-  expNo: String(expNumber),
+export const createNewExperiment = (expNumber = '') => ({
+  id: `exp_${Date.now()}_${expNumber || 'new'}`,
+  expNo: expNumber ? String(expNumber) : '',
   date: '',
   title: '',
   aim: '',
@@ -401,7 +401,7 @@ export const INITIAL_MULTI_EXPERIMENT_DATA = {
   imageOffsetY: 120,
   watermarkText: '',
   activeExpIndex: 0,
-  experiments: [createNewExperiment(1)]
+  experiments: [createNewExperiment('')]
 };
 
 export default function App() {
@@ -490,7 +490,7 @@ export default function App() {
   // ADD NEW EXPERIMENT FEATURE
   const handleAddExperiment = () => {
     setFormData((prev) => {
-      const nextExpNum = (prev.experiments || []).length + 6;
+      const nextExpNum = (prev.experiments || []).length + 1;
       const newExp = createNewExperiment(nextExpNum);
       const updatedExps = [...(prev.experiments || []), newExp];
       return {

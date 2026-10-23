@@ -160,7 +160,7 @@ export default function FormEditor({
               value={globalData.studentName || ''}
               onChange={(e) => handleGlobalFieldChange('studentName', e.target.value)}
               className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-blue-500/80 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 font-bold uppercase placeholder:text-slate-600 transition-all tracking-wide"
-              placeholder="e.g. ASHWANT S"
+              placeholder=""
             />
           </div>
           <div>
@@ -170,7 +170,7 @@ export default function FormEditor({
               value={globalData.registerNo || ''}
               onChange={(e) => handleGlobalFieldChange('registerNo', e.target.value)}
               className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-blue-500/80 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 font-mono font-bold placeholder:text-slate-600 transition-all tracking-wider"
-              placeholder="e.g. 714025247009"
+              placeholder=""
             />
           </div>
         </div>
@@ -212,7 +212,7 @@ export default function FormEditor({
               value={currentExp.expNo || ''}
               onChange={(e) => handleExpFieldChange('expNo', e.target.value)}
               className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-purple-500/80 focus:ring-2 focus:ring-purple-500/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 font-bold placeholder:text-slate-600 transition-all"
-              placeholder="e.g. 6"
+              placeholder=""
             />
           </div>
           <div>
@@ -225,7 +225,7 @@ export default function FormEditor({
               value={currentExp.date || ''}
               onChange={(e) => handleExpFieldChange('date', e.target.value)}
               className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-purple-500/80 focus:ring-2 focus:ring-purple-500/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 placeholder:text-slate-600 transition-all font-mono"
-              placeholder="DD/MM/YYYY (or leave blank)"
+              placeholder=""
             />
           </div>
         </div>
@@ -239,7 +239,7 @@ export default function FormEditor({
             value={currentExp.title || ''}
             onChange={(e) => handleExpFieldChange('title', e.target.value)}
             className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-purple-500/80 focus:ring-2 focus:ring-purple-500/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 font-bold uppercase placeholder:text-slate-600 transition-all tracking-wide"
-            placeholder="e.g. BASH SCRIPT USING BASH VARIABLE"
+            placeholder=""
           />
         </div>
       </div>
@@ -265,7 +265,7 @@ export default function FormEditor({
             value={currentExp.aim || ''}
             onChange={(e) => handleExpFieldChange('aim', e.target.value)}
             className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-indigo-500/80 focus:ring-2 focus:ring-indigo-500/20 rounded-xl p-3.5 text-xs text-slate-100 placeholder:text-slate-600 transition-all resize-y leading-relaxed"
-            placeholder="To write a Bash shell script to calculate an employee's basic salary details..."
+            placeholder=""
           />
         </div>
 
@@ -278,7 +278,7 @@ export default function FormEditor({
             value={currentExp.algorithm || ''}
             onChange={(e) => handleExpFieldChange('algorithm', e.target.value)}
             className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-indigo-500/80 focus:ring-2 focus:ring-indigo-500/20 rounded-xl p-3.5 text-xs text-slate-100 placeholder:text-slate-600 transition-all resize-y leading-relaxed font-mono"
-            placeholder={`1. Start the program.\n2. Read the employee name.\n3. Read the basic salary.\n4. Calculate HRA as 20% of basic salary.`}
+            placeholder=""
           />
         </div>
       </div>
@@ -327,7 +327,7 @@ export default function FormEditor({
             value={currentExp.code || ''}
             onChange={(e) => handleExpFieldChange('code', e.target.value)}
             className="w-full bg-slate-950/90 border border-white/[0.08] focus:border-emerald-500/80 focus:ring-2 focus:ring-emerald-500/20 rounded-xl p-3.5 text-xs text-slate-100 placeholder:text-slate-600 transition-all font-mono resize-y leading-relaxed"
-            placeholder="Paste Linux bash commands, C/C++ code, Java, or SQL queries here..."
+            placeholder=""
           />
         </div>
       </div>
@@ -355,7 +355,7 @@ export default function FormEditor({
             value={currentExp.outputText || ''}
             onChange={(e) => handleExpFieldChange('outputText', e.target.value)}
             className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-amber-500/80 focus:ring-2 focus:ring-amber-500/20 rounded-xl p-3 text-xs text-slate-200 placeholder:text-slate-600 transition-all font-mono resize-y"
-            placeholder="Paste text execution output..."
+            placeholder=""
           />
         </div>
 
@@ -434,7 +434,7 @@ export default function FormEditor({
               value={currentExp.evalMarks?.programExecution || ''}
               onChange={(e) => handleExpFieldChange('evalMarks', { ...currentExp.evalMarks, programExecution: e.target.value })}
               className="w-full bg-slate-900 border border-white/[0.08] focus:border-indigo-500 rounded-lg px-2 py-1.5 text-xs text-center font-bold text-white transition-all"
-              placeholder="-"
+              placeholder=""
             />
           </div>
           <div>
@@ -444,7 +444,7 @@ export default function FormEditor({
               value={currentExp.evalMarks?.classPerformance || ''}
               onChange={(e) => handleExpFieldChange('evalMarks', { ...currentExp.evalMarks, classPerformance: e.target.value })}
               className="w-full bg-slate-900 border border-white/[0.08] focus:border-indigo-500 rounded-lg px-2 py-1.5 text-xs text-center font-bold text-white transition-all"
-              placeholder="-"
+              placeholder=""
             />
           </div>
           <div>
@@ -454,7 +454,7 @@ export default function FormEditor({
               value={currentExp.evalMarks?.viva || ''}
               onChange={(e) => handleExpFieldChange('evalMarks', { ...currentExp.evalMarks, viva: e.target.value })}
               className="w-full bg-slate-900 border border-white/[0.08] focus:border-indigo-500 rounded-lg px-2 py-1.5 text-xs text-center font-bold text-white transition-all"
-              placeholder="-"
+              placeholder=""
             />
           </div>
           <div>
@@ -464,7 +464,7 @@ export default function FormEditor({
               value={currentExp.evalMarks?.total || ''}
               onChange={(e) => handleExpFieldChange('evalMarks', { ...currentExp.evalMarks, total: e.target.value })}
               className="w-full bg-slate-900 border border-emerald-500/40 focus:border-emerald-500 rounded-lg px-2 py-1.5 text-xs text-center font-bold text-emerald-400 transition-all"
-              placeholder="-"
+              placeholder=""
             />
           </div>
         </div>
@@ -476,7 +476,7 @@ export default function FormEditor({
             value={currentExp.result || ''}
             onChange={(e) => handleExpFieldChange('result', e.target.value)}
             className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-rose-500/80 focus:ring-2 focus:ring-rose-500/20 rounded-xl p-3.5 text-xs text-slate-100 placeholder:text-slate-600 transition-all leading-relaxed"
-            placeholder="Thus, using Linux commands, employee gross salary has been found successfully."
+            placeholder=""
           />
         </div>
       </div>

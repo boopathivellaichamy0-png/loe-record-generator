@@ -107,7 +107,7 @@ export default function Sidebar({ data, setData, formData, onUpdate, onFillSampl
               value={currentData.watermarkText || ''}
               onChange={(e) => handleUpdate('watermarkText', e.target.value)}
               className="w-full bg-slate-950/80 border border-white/[0.08] focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 placeholder:text-slate-600 transition-all font-mono"
-              placeholder="e.g. LOE RECORD (Leave blank for none)"
+              placeholder=""
             />
           </div>
           <p className="text-[10px] text-slate-400 leading-relaxed">
